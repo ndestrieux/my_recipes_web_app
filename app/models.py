@@ -21,6 +21,14 @@ class Recipe(models.Model):
         User, blank=False, null=False, on_delete=models.DO_NOTHING
     )
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["name", "language"], name="unique_recipe")
+        ]
+
+    def __str__(self):
+        return self.name
+
 
 class Ranking(models.Model):
     up = models.IntegerField()
@@ -45,6 +53,7 @@ class VoteHistory(models.Model):
 
 class Comment(models.Model):
     text = models.TextField(blank=False, null=False)
+    date = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, blank=False, null=False, on_delete=models.DO_NOTHING)
     recipe = models.ForeignKey(
         Recipe, blank=False, null=False, on_delete=models.CASCADE
@@ -52,10 +61,13 @@ class Comment(models.Model):
 
 
 class Ingredient(models.Model):
-    name = models.CharField(max_length=64, blank=False, null=False)
+    name = models.CharField(max_length=64, blank=False, null=False, unique=True)
     recipes = models.ManyToManyField(
         Recipe, related_name="ingredients", through="IngredientQuantity"
     )
+
+    def __str__(self):
+        return self.name
 
 
 class IngredientQuantity(models.Model):

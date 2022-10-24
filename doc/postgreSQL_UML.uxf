@@ -61,9 +61,9 @@ FK  receipt: int
     <id>UMLClass</id>
     <coordinates>
       <x>530</x>
-      <y>120</y>
+      <y>100</y>
       <w>170</w>
-      <h>140</h>
+      <h>160</h>
     </coordinates>
     <panel_attributes>Recipe
 --
@@ -73,6 +73,7 @@ PK  id: int
       nb_of_people: int
       image: image
       language: choice
+      date: date
 FK  user: int
       
 </panel_attributes>
@@ -108,12 +109,13 @@ m2=1..n</panel_attributes>
       <x>480</x>
       <y>430</y>
       <w>170</w>
-      <h>100</h>
+      <h>110</h>
     </coordinates>
     <panel_attributes>Comment
 --
 PK  id: int
       text: text
+      date: date
 FK  user:int
 FK  recipe: int
       
