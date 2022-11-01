@@ -45,11 +45,11 @@ layer=0</panel_attributes>
       <w>170</w>
       <h>110</h>
     </coordinates>
-    <panel_attributes>Ingredient_Receipt
+    <panel_attributes>IngredientQuantity
 --
 PK  id: int
 FK  ingredient: int
-FK  receipt: int
+FK  recipe: int
       quantity: int
       unit: choice
       
