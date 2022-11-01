@@ -2,8 +2,9 @@ from datetime import datetime as dt
 
 from django.test import TestCase
 
-from app.models import User, Recipe, VoteHistory, Comment, Ingredient, IngredientQuantity
 from app.enums import LanguageChoice, VoteChoice
+from app.models import (Comment, Ingredient, IngredientQuantity, Recipe, User,
+                        VoteHistory)
 
 # Create your tests here.
 
