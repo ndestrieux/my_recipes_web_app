@@ -98,4 +98,4 @@ class IngredientQuantity(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.DO_NOTHING)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(blank=False, null=False)
-    unit = models.CharField(max_length=64, blank=False, null=False)
+    unit = models.CharField(max_length=64)
