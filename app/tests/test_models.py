@@ -3,8 +3,8 @@ from datetime import datetime as dt
 from django.test import TestCase
 
 from app.enums import LanguageChoice, VoteChoice
-from app.models import (Comment, Ingredient, IngredientQuantity, Recipe, User,
-                        VoteHistory)
+from app.models import (Comment, Ingredient, IngredientQuantity, Ranking,
+                        Recipe, User, VoteHistory)
 
 # Create your tests here.
 
@@ -86,3 +86,16 @@ class IngredientQuantityModelTest(BaseTestSetup, TestCase):
     def testShouldReturnTrueWhenIngredientQuantityInstanceCreatedInDatabase(self):
         ingredient_recipe_relationships = IngredientQuantity.objects.all()
         self.assertIn(self.test_ingredient_quantity, ingredient_recipe_relationships)
+
+
+class RankingModelTest(BaseTestSetup, TestCase):
+    def testShouldReturnCreatedRankingInstanceWhenRecipeInstanceIsCreated(self):
+        Recipe.objects.create(
+            name="test",
+            content="test",
+            nb_of_people=8,
+            language=LanguageChoice.EN,
+            posted_by=self.test_user,
+        )
+        rankings = Ranking.objects.all()
+        self.assertGreater(len(rankings), 0)
