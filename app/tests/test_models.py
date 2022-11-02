@@ -17,6 +17,12 @@ class BaseTestSetup:
             password="test",
             email="johndoe@test.com",
         )
+        self.test_unsatisfied_user = User.objects.create_user(
+            first_name="Paul",
+            last_name="Jones",
+            password="test",
+            email="pauljones@test.com",
+        )
         self.test_recipe = Recipe.objects.create(
             name="Applepie",
             content="test",
@@ -27,6 +33,11 @@ class BaseTestSetup:
         self.test_vote = VoteHistory.objects.create(
             vote=VoteChoice.UP,
             user=self.test_user,
+            recipe=self.test_recipe,
+        )
+        self.test_down_vote = VoteHistory.objects.create(
+            vote=VoteChoice.DOWN,
+            user=self.test_unsatisfied_user,
             recipe=self.test_recipe,
         )
         self.test_comment = Comment.objects.create(
@@ -90,12 +101,13 @@ class IngredientQuantityModelTest(BaseTestSetup, TestCase):
 
 class RankingModelTest(BaseTestSetup, TestCase):
     def testShouldReturnCreatedRankingInstanceWhenRecipeInstanceIsCreated(self):
-        Recipe.objects.create(
-            name="test",
-            content="test",
-            nb_of_people=8,
-            language=LanguageChoice.EN,
-            posted_by=self.test_user,
-        )
         rankings = Ranking.objects.all()
         self.assertGreater(len(rankings), 0)
+
+    def testShouldReturnIncrementedUpFieldWhenUserVotedUp(self):
+        ranking = Ranking.objects.get(recipe=self.test_recipe)
+        self.assertGreater(ranking.up, 0)
+
+    def testShouldReturnIncrementedDownFieldWhenUserVotedUp(self):
+        ranking = Ranking.objects.get(recipe=self.test_recipe)
+        self.assertGreater(ranking.down, 0)
