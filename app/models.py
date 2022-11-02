@@ -74,6 +74,11 @@ class VoteHistory(models.Model):
         Recipe, blank=False, null=False, on_delete=models.CASCADE
     )
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["user", "recipe"], name="unique_vote")
+        ]
+
 
 class Comment(models.Model):
     text = models.TextField(blank=False, null=False)
