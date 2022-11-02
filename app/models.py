@@ -55,8 +55,8 @@ class Recipe(models.Model):
 
 
 class Ranking(models.Model):
-    up = models.IntegerField()
-    down = models.IntegerField()
+    up = models.IntegerField(default=0)
+    down = models.IntegerField(default=0)
     recipe = models.OneToOneField(
         Recipe, blank=False, null=False, on_delete=models.CASCADE
     )
