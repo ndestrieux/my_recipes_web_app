@@ -17,6 +17,6 @@ def update_ranking(sender, instance, created, **kwargs):
         ranking = Ranking.objects.get(recipe=instance.recipe)
         if instance.vote == VoteChoice.UP:
             ranking.up += 1
-        if instance.vote == VoteChoice.DOWN:
+        elif instance.vote == VoteChoice.DOWN:
             ranking.down += 1
         ranking.save()
