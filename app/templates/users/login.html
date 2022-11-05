@@ -3,15 +3,10 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <section class="section lb text-muted">
+    <section class="section wb">
         <div class="container">
             <h2>Login</h2>
-            <form method="post">
-                {{ form|crispy }}
-                <input type="submit" class="btn btn-primary" value="Log in">
-                <a href="#" class="btn btn-primary">Cancel</a>
-                {% csrf_token %}
-            </form>
+                {% crispy form %}
         </div>
     </section>
 

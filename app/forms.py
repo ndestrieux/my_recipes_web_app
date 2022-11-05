@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
 from crispy_forms.helper import FormHelper
@@ -35,3 +35,23 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["first_name", "last_name", "username", "email", "password1", "password2"]
+
+
+class UserLoginForm(AuthenticationForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "POST"
+        self.helper.layout = Layout(
+            "username",
+            "password",
+            ButtonHolder(
+                Submit('submit', 'login'),
+                HTML("<a href='#' class='btn btn-primary'>Cancel</a>")
+            )
+        )
+
+        class Meta:
+            model = User
+            fields = ["username", "password"]
