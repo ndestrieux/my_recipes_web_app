@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 from app.enums import LanguageChoice, UnitChoice, VoteChoice
 
@@ -11,7 +11,7 @@ class Recipe(models.Model):
     image = models.ImageField(blank=True, null=True)
     language = models.CharField(
         max_length=32,
-        choices=[(tag, tag.value) for tag in LanguageChoice],
+        choices=[(tag.name, tag.value) for tag in LanguageChoice],
         blank=False,
         null=False,
     )
@@ -39,7 +39,7 @@ class Ranking(models.Model):
 class VoteHistory(models.Model):
     vote = models.CharField(
         max_length=16,
-        choices=[(tag, tag.value) for tag in VoteChoice],
+        choices=[(tag.name, tag.value) for tag in VoteChoice],
         blank=False,
         null=False,
     )
