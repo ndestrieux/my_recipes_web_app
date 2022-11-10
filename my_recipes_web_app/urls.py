@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path
-from app.views import UserRegistrationView, UserLoginView, HomePageView
+from app.views import UserRegistrationView, UserLoginView, HomePageView, RecipeCreationView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -24,4 +24,5 @@ urlpatterns = [
     path("login/", UserLoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("home/", HomePageView.as_view(), name="home"),
+    path("newrecipe/", RecipeCreationView.as_view(), name="add-recipe"),
 ]
