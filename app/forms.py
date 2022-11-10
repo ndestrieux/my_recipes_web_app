@@ -17,28 +17,34 @@ class UserRegistrationForm(UserCreationForm):
             Row(
                 Column("first_name", css_class="form-group col-md-6"),
                 Column("last_name", css_class="form-group col-md-6"),
-                css_class="row"
+                css_class="row",
             ),
             "username",
             "email",
             Row(
                 Column("password1", css_class="form-group col-md-6"),
                 Column("password2", css_class="form-group col-md-6"),
-                css_class="row"
+                css_class="row",
             ),
             ButtonHolder(
-                Submit('submit', 'register'),
-                HTML("<a href='#' class='btn btn-primary'>Cancel</a>")
-            )
+                Submit("submit", "register"),
+                HTML("<a href='#' class='btn btn-primary'>Cancel</a>"),
+            ),
         )
 
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "username", "email", "password1", "password2"]
+        fields = [
+            "first_name",
+            "last_name",
+            "username",
+            "email",
+            "password1",
+            "password2",
+        ]
 
 
 class UserLoginForm(AuthenticationForm):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -47,9 +53,9 @@ class UserLoginForm(AuthenticationForm):
             "username",
             "password",
             ButtonHolder(
-                Submit('submit', 'login'),
-                HTML("<a href='#' class='btn btn-primary'>Cancel</a>")
-            )
+                Submit("submit", "login"),
+                HTML("<a href='#' class='btn btn-primary'>Cancel</a>"),
+            ),
         )
 
         class Meta:
