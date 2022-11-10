@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    {% load static%}
-
+{% load static%}
+<head>
     <!-- Basic -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -46,6 +46,15 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+    <!-- Core JavaScript
+    ================================================== -->
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/tether.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+    {% block head_scripts %}
+    {% endblock %}
+
 </head>
 <body>
 
@@ -82,7 +91,7 @@
                                 <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Welcome, {{ user }}
                                     <span class="caret"></span></a>
                                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="#">Add new recipe</a>
+                                    <a class="dropdown-item" href="{% url 'add-recipe' %}">Add new recipe</a>
                                     <a class="dropdown-item" href="#">Manage my recipes</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">Profile</a>
@@ -136,13 +145,6 @@
         <div class="dmtop">Scroll to Top</div>
 
     </div><!-- end wrapper -->
-
-    <!-- Core JavaScript
-    ================================================== -->
-    <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/tether.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'js/custom.js' %}"></script>
 
 </body>
 </html>
