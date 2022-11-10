@@ -8,7 +8,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
     content = models.TextField(blank=False, null=False)
     nb_of_people = models.IntegerField(blank=False, null=False)
-    image = models.ImageField()
+    image = models.ImageField(blank=True, null=True)
     language = models.CharField(
         max_length=32,
         choices=[(tag, tag.value) for tag in LanguageChoice],
