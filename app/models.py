@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from app.enums import LanguageChoice, VoteChoice
+from app.enums import LanguageChoice, UnitChoice, VoteChoice
 
 
 class Recipe(models.Model):
@@ -77,4 +77,9 @@ class IngredientQuantity(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.DO_NOTHING)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(blank=False, null=False)
-    unit = models.CharField(max_length=64)
+    unit = models.CharField(
+        max_length=16,
+        choices=[(tag.name, tag.value) for tag in UnitChoice],
+        blank=True,
+        null=True,
+    )
