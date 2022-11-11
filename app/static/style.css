@@ -1674,3 +1674,22 @@ hr.invis3 {
     -o-border-radius: 50%;
     border-radius: 50%
 }
+
+.ingredient-container {
+    position: relative;
+    margin-bottom: 1em;
+    border: 1px solid #ABABAB;
+    padding: 0rem 0.8rem;
+    border-right: 1px solid #939393;
+    border-bottom: 1px solid #939393;
+    border-radius: 10px;
+}
+
+.remove_form .fa-times-circle-o {
+    position: absolute;
+    top: -0.5em;
+    right: -0.45em;
+    font-size:24px;
+    color:#ab0012;
+    background: white;
+}

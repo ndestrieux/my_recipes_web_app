@@ -23,28 +23,32 @@
                 <br>
                 <div class="custombox authorbox clearfix">
                     <h4 class="small-title">Ingredients</h4>
-                    <div class="form-buttons">
-                        <a href="javascript:void(0)" class=" btn btn-primary btn-sm remove_form">Remove form</a>
-                        <a href="javascript:void(0)" class="btn btn-primary btn-sm add_form">Add form</a>
-                        <br>
-                    </div>
                     <div class="form_set">
                         {{ ingredient_forms.management_form }}
                         {{ ingredient_forms.non_form_errors }}
                         {% for ingredient_form in ingredient_forms %}
                         {{ ingredient_form.id }}
-                        <fieldset>
+                        <div class="ingredient-container">
+                            <a href="javascript:void(0)" class="remove_form" style="display: none;">
+                                <i class="fa fa-times-circle-o"></i>
+                            </a>
                             {{ ingredient_form.id }}
                             <div class="inline {{ ingredient_form.prefix }} mb-2">
                                         {% crispy ingredient_form %}
                             </div>
-                        </fieldset>
+                        </div>
                         {% endfor %}
                         <div class="empty_form" style="display:none">
-                            <fieldset>
-                                        {% crispy ingredient_forms.empty_form %}
-                            </fieldset>
+                            <div class="ingredient-container">
+                                <a href="javascript:void(0)" class="remove_form">
+                                    <i class="fa fa-times-circle-o" style="font-size:24px;color:#ab0012"></i>
+                                </a>
+                                {% crispy ingredient_forms.empty_form %}
+                            </div>
                         </div>
+                        <a href="javascript:void(0)" class="add_form">
+                            <i class="fa fa-plus"> add ingredient</i>
+                        </a>
                     </div>
                 </div>
                     <br>

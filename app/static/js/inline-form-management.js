@@ -1,37 +1,28 @@
-$(function () {
-        // disable remove form button when only one form remain
-        $(".remove_form").each(function () {
-            const actualNbOfForms = parseInt($(this).closest("div").next(".form_set")
-                .children("input:first").val());
-            if (actualNbOfForms === 1) {
-                $(this).addClass("disabled").attr("aria-disabled", true);
-            }
-        });
+var form_count = 1;
 
+$(function () {
         // add form functionality
         $("form").on("click", ".add_form", function (event) {
-            const formSetDiv = $(this).closest("div").next(".form_set");
+            const formSetDiv = $(this).parents(".form_set");
             const totalForms = formSetDiv.children("input:first");
-            const form_idx = totalForms.val();
             const emptyForm = formSetDiv.children(".empty_form");
-            formSetDiv.append(emptyForm.html().replace(/__prefix__/g, form_idx));
-            totalForms.val(parseInt(form_idx) + 1);
-            if (parseInt(form_idx) + 1 > 1) {
-                $(this).prev("a").removeClass("disabled").removeAttr("aria-disabled", true);
+            newForm = $.parseHTML(emptyForm.html().replace(/__prefix__/g, form_count))
+            emptyForm.before(newForm)
+            form_count++;
+            totalForms.val(form_count);
+            if (form_count > 1) {
+                formSetDiv.children(".ingredient-container:first").children(".remove_form:first").show();
             }
         });
 
         // remove form functionality
         $("form").on("click", ".remove_form", function (event) {
-            const formSetDiv = $(this).closest("div").next(".form_set");
-            const totalForms = formSetDiv.children("input:first");
-            const form_idx = totalForms.val();
-            formSetDiv.children("fieldset:last").remove();
-            totalForms.val(parseInt(form_idx) - 1);
-            if (parseInt(form_idx) - 1 === 1) {
-                $(this).addClass("disabled").attr("aria-disabled", true);
+            const formSetDiv = $(this).parents(".form_set");
+            const formToBeRemoved = $(this).parents(".ingredient-container")
+            formToBeRemoved.remove();
+            form_count--;
+            if (form_count === 1) {
+                formSetDiv.children(".ingredient-container:first").children(".remove_form:first").hide();
             }
         });
-
-//    });
-})(jQuery);
+});
