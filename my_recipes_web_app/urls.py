@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path
+from django.views.generic.base import RedirectView
 from app.views import UserRegistrationView, UserLoginView, HomePageView, RecipeCreationView
 
 urlpatterns = [
+    path("", RedirectView.as_view(url="home", permanent=False), name="redirect"),
     path("admin/", admin.site.urls),
     path("register/", UserRegistrationView.as_view(), name="register"),
     path("login/", UserLoginView.as_view(), name="login"),
