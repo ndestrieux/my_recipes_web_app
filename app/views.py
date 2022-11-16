@@ -46,3 +46,8 @@ class RecipeCreationView(LoginRequiredMixin, NamedFormsetsMixin, CreateWithInlin
         kwargs = super().get_form_kwargs()
         kwargs["current_user_id"] = self.request.user.id
         return kwargs
+
+
+class RecipeListView(ListView):
+    model = Recipe
+    template_name = "app/recipe_list.html"
