@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
-from app.views import UserRegistrationView, UserLoginView, HomePageView, RecipeCreationView
+from app.views import UserRegistrationView, UserLoginView, HomePageView, RecipeCreationView, RecipeListView
 
 urlpatterns = [
     path("", RedirectView.as_view(url="home", permanent=False), name="redirect"),
@@ -27,4 +29,5 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("home/", HomePageView.as_view(), name="home"),
     path("newrecipe/", RecipeCreationView.as_view(), name="add-recipe"),
-]
+    path("recipes/", RecipeListView.as_view(), name="recipe-list"),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
