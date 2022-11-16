@@ -9,13 +9,17 @@ class Recipe(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
     content = models.TextField(blank=False, null=False)
     nb_of_people = models.IntegerField(blank=False, null=False)
-    image = models.ImageField(upload_to=rename_image_file, blank=True, null=True)
+    image = models.ImageField(
+        upload_to="images", max_length=1000, blank=True, null=True
+    )
+    thumbnail = models.ImageField(upload_to="thumbnails", blank=True, null=True)
     language = models.CharField(
         max_length=32,
         choices=[(tag.name, tag.value) for tag in LanguageChoice],
         blank=False,
         null=False,
     )
+    date = models.DateField(auto_now_add=True)
     posted_by = models.ForeignKey(
         User, blank=False, null=False, on_delete=models.DO_NOTHING
     )
