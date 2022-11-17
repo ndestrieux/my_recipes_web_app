@@ -16,13 +16,14 @@
             <h2>Add new recipe</h2>
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+                {{ form.non_field_errors }}
                 {{ form.language|as_crispy_field }}
                 {{ form.name|as_crispy_field }}
                 {{ form.image|as_crispy_field }}
                 {{ form.nb_of_people|as_crispy_field }}
                 <br>
                 <div class="custombox authorbox clearfix">
-                    <h4 class="small-title">Ingredients</h4>
+                    <h4 class="small-title">Ingredients<span class="asteriskField">*</span></h4>
                     <div class="form_set">
                         {{ ingredient_forms.management_form }}
                         {{ ingredient_forms.non_form_errors }}
