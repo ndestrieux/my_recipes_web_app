@@ -14,9 +14,15 @@ class Recipe(models.Model):
     content = models.TextField(blank=False, null=False)
     nb_of_people = models.IntegerField(blank=False, null=False)
     image = models.ImageField(
-        upload_to="images", max_length=1000, blank=True, null=True
+        upload_to="images",
+        default="default-image.jpg",
+        max_length=1000,
+        blank=True,
+        null=True,
     )
-    thumbnail = models.ImageField(upload_to="thumbnails", blank=True, null=True)
+    thumbnail = models.ImageField(
+        upload_to="thumbnails", default="default-image.jpg", blank=True, null=True
+    )
     language = models.CharField(
         max_length=32,
         choices=[(tag.name, tag.value) for tag in LanguageChoice],
@@ -34,7 +40,7 @@ class Recipe(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-        if self.image:
+        if self.image and self.image.name is not "default-image.jpg":
             self.image.name = rename_image_file(self, self.image.name)
             self.thumbnail = self.create_thumbnail(self.image)
         super().save(*args, **kwargs)
