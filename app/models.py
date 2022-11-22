@@ -6,11 +6,20 @@ from django.db import models
 from PIL import Image
 
 from app.enums import LanguageChoice, UnitChoice, VoteChoice
-from app.utils import rename_image_file
+
+
+class Ingredient(models.Model):
+    name = models.CharField(max_length=64, blank=False, null=False, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Recipe(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
+    ingredients = models.ManyToManyField(
+        Ingredient, related_name="ingredients", through="IngredientQuantity"
+    )
     content = models.TextField(blank=False, null=False)
     nb_of_people = models.IntegerField(blank=False, null=False)
     image = models.ImageField(
@@ -79,6 +88,18 @@ class Recipe(models.Model):
         return self.name
 
 
+class IngredientQuantity(models.Model):
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.DO_NOTHING)
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(blank=False, null=False)
+    unit = models.CharField(
+        max_length=16,
+        choices=[(tag.name, tag.value) for tag in UnitChoice],
+        blank=True,
+        null=True,
+    )
+
+
 class Ranking(models.Model):
     up = models.IntegerField(default=0)
     down = models.IntegerField(default=0)
@@ -111,26 +132,4 @@ class Comment(models.Model):
     user = models.ForeignKey(User, blank=False, null=False, on_delete=models.DO_NOTHING)
     recipe = models.ForeignKey(
         Recipe, blank=False, null=False, on_delete=models.CASCADE
-    )
-
-
-class Ingredient(models.Model):
-    name = models.CharField(max_length=64, blank=False, null=False, unique=True)
-    recipes = models.ManyToManyField(
-        Recipe, related_name="ingredients", through="IngredientQuantity"
-    )
-
-    def __str__(self):
-        return self.name
-
-
-class IngredientQuantity(models.Model):
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.DO_NOTHING)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(blank=False, null=False)
-    unit = models.CharField(
-        max_length=16,
-        choices=[(tag.name, tag.value) for tag in UnitChoice],
-        blank=True,
-        null=True,
     )
