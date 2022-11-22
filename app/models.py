@@ -62,7 +62,7 @@ class Recipe(models.Model):
     @staticmethod
     def create_thumbnail(image):
         thumb = Image.open(image)
-        thumbnail_size = 800
+        thumbnail_size = 300
         left = 0
         top = 0
         right = thumbnail_size
