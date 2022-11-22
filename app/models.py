@@ -50,9 +50,14 @@ class Recipe(models.Model):
 
     def save(self, *args, **kwargs):
         if self.image and self.image.name is not "default-image.jpg":
-            self.image.name = rename_image_file(self, self.image.name)
+            self.image.name = self.rename_image_file(self.image.name)
             self.thumbnail = self.create_thumbnail(self.image)
         super().save(*args, **kwargs)
+
+    def rename_image_file(self, filename):
+        ext = filename.split(".")[-1]
+        filename = f"{self.language}_{self.name}.{ext}"
+        return filename
 
     @staticmethod
     def create_thumbnail(image):
