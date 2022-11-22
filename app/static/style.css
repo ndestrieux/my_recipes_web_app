@@ -1693,3 +1693,23 @@ hr.invis3 {
     color:#ab0012;
     background: white;
 }
+
+.btn-group  {
+    display: inline;
+    font-size: 20px;
+    margin-bottom: 7px;
+}
+
+#thumbUp, #thumbDown {
+    border: 0;
+    border-radius: 50%;
+    height: 3em;
+    width: 3em;
+}
+
+#likeCounter    {
+    vertical-align: baseline;
+    display: inline;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
