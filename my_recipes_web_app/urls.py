@@ -19,7 +19,7 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
-from app.views import UserRegistrationView, UserLoginView, HomePageView, RecipeCreationView, RecipeListView
+from app.views import UserRegistrationView, UserLoginView, HomePageView, RecipeCreationView, RecipeListView, RecipeDetailView
 
 urlpatterns = [
     path("", RedirectView.as_view(url="home", permanent=False), name="redirect"),
@@ -30,4 +30,5 @@ urlpatterns = [
     path("home/", HomePageView.as_view(), name="home"),
     path("newrecipe/", RecipeCreationView.as_view(), name="add-recipe"),
     path("recipes/", RecipeListView.as_view(), name="recipe-list"),
+    path("recipe/<int:pk>/", RecipeDetailView.as_view(), name="recipe-detail"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
