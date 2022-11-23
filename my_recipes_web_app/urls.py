@@ -15,11 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.contrib.auth.views import LogoutView
-from django.urls import path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
+from rest_framework.routers import DefaultRouter
+from api.views import VoteHistoryCreateView
 from app.views import UserRegistrationView, UserLoginView, HomePageView, RecipeCreationView, RecipeListView, RecipeDetailView
+
+
+# router = DefaultRouter()
+# router.register("vote", VoteHistoryCreateView, basename="vote")
+
 
 urlpatterns = [
     path("", RedirectView.as_view(url="home", permanent=False), name="redirect"),
@@ -31,4 +38,5 @@ urlpatterns = [
     path("newrecipe/", RecipeCreationView.as_view(), name="add-recipe"),
     path("recipes/", RecipeListView.as_view(), name="recipe-list"),
     path("recipe/<int:pk>/", RecipeDetailView.as_view(), name="recipe-detail"),
+    path("api/vote/", VoteHistoryCreateView.as_view(), name="vote"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
