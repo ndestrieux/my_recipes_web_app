@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "crispy_forms",
     "extra_views",
+    "rest_framework",
     "app",
 ]
 
