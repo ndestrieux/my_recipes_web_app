@@ -25,8 +25,7 @@
                     <div class="blog-meta big-meta">
                         <h4><a href="{% url 'recipe-detail' recipe.id %}">{{ recipe.name }}</a></h4>
                         <small><a href="{% url 'recipe-detail' recipe.id %}" title="">{{ recipe.date }}</a></small>
-                        <small><a href="{% url 'recipe-detail' recipe.id %}" title="">by {{ recipe.posted_by
-                            }}</a></small>
+                        <small><a href="{% url 'recipe-detail' recipe.id %}" title="">by {{ recipe.posted_by }}</a></small>
                     </div>
                 </div>
             </div>
