@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "extra_views",
     "rest_framework",
+    "api",
     "app",
 ]
 
