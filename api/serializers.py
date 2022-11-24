@@ -10,11 +10,10 @@ class VoteHistorySerializer(ModelSerializer):
         fields = [
             "vote",
             "recipe",
-            "user",
         ]
 
     def create(self, validated_data):
-        user = validated_data["user"]
+        user = self.context["current_user"]
         recipe = validated_data["recipe"]
         vote = validated_data["vote"]
         try:
