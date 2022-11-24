@@ -1,13 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
-from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, DetailView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin
 
 from app.forms import (IngredientQuantityFormSet, RecipeForm, UserLoginForm,
                        UserRegistrationForm)
-from app.models import Ingredient, Recipe, IngredientQuantity
+from app.models import Ingredient, Recipe, VoteHistory
 
 
 class UserRegistrationView(CreateView):
@@ -27,7 +28,9 @@ class HomePageView(ListView):
     template_name = "app/home_page.html"
 
 
-class RecipeCreationView(LoginRequiredMixin, SuccessMessageMixin, NamedFormsetsMixin, CreateWithInlinesView):
+class RecipeCreationView(
+    LoginRequiredMixin, SuccessMessageMixin, NamedFormsetsMixin, CreateWithInlinesView
+):
     model = Recipe
     form_class = RecipeForm
     inlines = [
@@ -57,3 +60,11 @@ class RecipeListView(ListView):
 
 class RecipeDetailView(DetailView):
     model = Recipe
+
+    def get_context_data(self, **kwargs):
+        try:
+            vote = VoteHistory.objects.get(user=self.request.user, recipe=self.object)
+        except ObjectDoesNotExist:
+            vote = None
+        kwargs["vote"] = vote
+        return super().get_context_data(**kwargs)
