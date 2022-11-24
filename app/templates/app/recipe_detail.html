@@ -2,6 +2,39 @@
 
 {% load static%}
 
+{% block head_scripts %}
+<script>
+    $(document).ready(function(){
+        $("form").on("click", ".vote", function(event){
+            event.preventDefault();
+            let recipe_id = $(this).parents("form").attr("value");
+            if ($(this).hasClass("active")) {
+                $(this).removeClass("active");
+            } else {
+                $(".vote").removeClass("active");
+                $(this).addClass("active");
+            }
+            let your_data = {
+                    "recipe": recipe_id,
+                    "csrfmiddlewaretoken": "{{ csrf_token }}",
+                    "vote": $(this).attr("value"),
+            };
+            $.ajax({
+                type: "POST",
+                url: "{% url "vote" %}",
+                data: your_data,
+                success: function(response){
+                      console.log(response)
+                },
+                error: function(rs, e){
+                  console.log(rs.responseText);
+                }
+            });
+        });
+    })
+</script>
+{% endblock %}
+
 {% block content %}
 
 <section class="section lb">
