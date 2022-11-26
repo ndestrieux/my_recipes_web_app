@@ -14,7 +14,7 @@
                 $(".vote").removeClass("active");
                 $(this).addClass("active");
             }
-            let your_data = {
+            let data = {
                     "recipe": recipe_id,
                     "csrfmiddlewaretoken": "{{ csrf_token }}",
                     "vote": $(this).attr("value"),
@@ -22,9 +22,22 @@
             $.ajax({
                 type: "POST",
                 url: "{% url "vote" %}",
-                data: your_data,
-                success: function(response){
-                      console.log(response)
+                data: data,
+                success: function(){
+                    let ranking_url = "{% url "ranking" recipe.ranking.id %}";
+                    let ranking_html = $("#likeCounter");
+                    fetch(ranking_url, {
+                        headers:{
+                            'Accept': 'application/json',
+                            'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+                        },
+                    })
+                    .then(response => {
+                        return response.json(); //Convert response to JSON
+                    })
+                    .then(data => {
+                        ranking_html.html(data["up"] - data["down"]);
+                    })
                 },
                 error: function(rs, e){
                   console.log(rs.responseText);
@@ -59,7 +72,7 @@
                             <button class="fa fa-thumbs-up vote {% if vote.vote == 'UP' %}active{% endif %}"
                                     id="thumbUp"
                                     value="UP"></button>
-                            <div id="likeCounter">{{ recipe.ranking }}</div>
+                            <button class="vote"><div id="likeCounter">{{ recipe.ranking }}</div></button>
                             <button class="fa fa-thumbs-down vote {% if vote.vote == 'DOWN' %}active{% endif %}"
                                     id="thumbDown"
                                     value="DOWN"></button>
