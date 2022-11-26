@@ -19,7 +19,7 @@ class VoteHistorySerializer(ModelSerializer):
         try:
             user_vote = VoteHistory.objects.get(user=user, recipe=recipe)
         except ObjectDoesNotExist:
-            user_vote = VoteHistory.objects.create(**validated_data)
+            user_vote = VoteHistory.objects.create(user=user, **validated_data)
         else:
             if user_vote.vote == vote:
                 user_vote.delete()
