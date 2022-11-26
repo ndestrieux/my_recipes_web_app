@@ -109,7 +109,11 @@ class Ranking(models.Model):
     up = models.IntegerField(default=0)
     down = models.IntegerField(default=0)
     recipe = models.OneToOneField(
-        Recipe, blank=False, null=False, related_name="ranking", on_delete=models.CASCADE
+        Recipe,
+        blank=False,
+        null=False,
+        related_name="ranking",
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):
