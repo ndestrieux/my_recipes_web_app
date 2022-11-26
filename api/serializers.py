@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.serializers import ModelSerializer
 
-from app.models import VoteHistory
+from app.models import VoteHistory, Ranking
 
 
 class VoteHistorySerializer(ModelSerializer):
@@ -28,3 +28,9 @@ class VoteHistorySerializer(ModelSerializer):
                 user_vote.save(update_fields=["vote"])
         finally:
             return user_vote
+
+
+class RankingSerializer(ModelSerializer):
+    class Meta:
+        model = Ranking
+        fields = ["pk", "up", "down", ]

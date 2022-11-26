@@ -13,20 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.contrib.auth.views import LogoutView
-from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
+from django.contrib.auth.views import LogoutView
+from django.urls import include, path
 from django.views.generic.base import RedirectView
 from rest_framework.routers import DefaultRouter
-from api.views import VoteHistoryCreateView
-from app.views import UserRegistrationView, UserLoginView, HomePageView, RecipeCreationView, RecipeListView, RecipeDetailView
 
-
-# router = DefaultRouter()
-# router.register("vote", VoteHistoryCreateView, basename="vote")
-
+from api.views import RankingDetailView, VoteHistoryCreateView
+from app.views import (HomePageView, RecipeCreationView, RecipeDetailView,
+                       RecipeListView, UserLoginView, UserRegistrationView)
 
 urlpatterns = [
     path("", RedirectView.as_view(url="home", permanent=False), name="redirect"),
@@ -39,4 +36,5 @@ urlpatterns = [
     path("recipes/", RecipeListView.as_view(), name="recipe-list"),
     path("recipe/<int:pk>/", RecipeDetailView.as_view(), name="recipe-detail"),
     path("api/vote/", VoteHistoryCreateView.as_view(), name="vote"),
+    path("api/ranking/<int:pk>/", RankingDetailView.as_view(), name="ranking"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
