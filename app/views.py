@@ -41,7 +41,7 @@ class RecipeCreationView(
     ]
     template_name = "app/create_recipe.html"
     success_url = reverse_lazy("home")
-    success_message = "New recipe \"%(name)s\" has been created successfully"
+    success_message = 'New recipe "%(name)s" has been created successfully'
 
     def get_context_data(self, **kwargs):
         kwargs["ingredients"] = Ingredient.objects.all()
