@@ -1702,16 +1702,20 @@ hr.invis3 {
 
 .vote   {
     border: 0;
+    background-color: white;
+    height: 50px;
+    width: 50px;
+}
+
+#thumbUp, #thumbDown    {
     border-radius: 50%;
     background-color: silver;
     color: white;
-    height: 50px;
-    width: 50px;
     box-shadow:1px 1px 0px rgba(176, 176, 176, 0.3);
     cursor:pointer;
 }
 
-.vote:hover   {
+#thumbUp:hover, #thumbDown:hover   {
     box-shadow:1px 1px 2px rgba(176, 176, 176, 0.5);
 }
 
@@ -1732,9 +1736,3 @@ hr.invis3 {
     background-color: #cc0000;
 }
 
-#likeCounter    {
-    vertical-align: baseline;
-    display: inline;
-    margin-left: 0.5em;
-    margin-right: 0.5em;
-}
