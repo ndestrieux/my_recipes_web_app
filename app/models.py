@@ -5,7 +5,7 @@ from django.core.files import File
 from django.db import models
 from PIL import Image
 
-from app.enums import LanguageChoice, UnitChoice, VoteChoice
+from app.enums import CategoryChoice, LanguageChoice, UnitChoice, VoteChoice
 
 
 class Ingredient(models.Model):
@@ -17,6 +17,12 @@ class Ingredient(models.Model):
 
 class Recipe(models.Model):
     name = models.CharField(max_length=256, blank=False, null=False)
+    category = models.CharField(
+        max_length=32,
+        choices=[(tag.name, tag.value) for tag in CategoryChoice],
+        blank=False,
+        null=False,
+    )
     ingredients = models.ManyToManyField(
         Ingredient, related_name="ingredients", through="IngredientQuantity"
     )
@@ -49,7 +55,7 @@ class Recipe(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-        if self.image and self.image.name is not "default-image.jpg":
+        if self.image and self.image.name != "default-image.jpg":
             self.image.name = self.rename_image_file(self.image.name)
             self.thumbnail = self.create_thumbnail(self.image)
         super().save(*args, **kwargs)
@@ -91,6 +97,90 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class BreakfastManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(category=CategoryChoice.breakfast.name)
+
+
+class LunchManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(category=CategoryChoice.lunch.name)
+
+
+class DinnerManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(category=CategoryChoice.dinner.name)
+
+
+class DessertManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(category=CategoryChoice.dessert.name)
+
+
+class DrinkManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(category=CategoryChoice.drink.name)
+
+
+class AppetizerManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(category=CategoryChoice.appetizer.name)
+
+
+class BakeryManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(category=CategoryChoice.bakery.name)
+
+
+class BreakfastRecipe(Recipe):
+    objects = BreakfastManager()
+
+    class Meta:
+        proxy = True
+
+
+class LunchRecipe(Recipe):
+    objects = LunchManager()
+
+    class Meta:
+        proxy = True
+
+
+class DinnerRecipe(Recipe):
+    objects = DinnerManager()
+
+    class Meta:
+        proxy = True
+
+
+class DessertRecipe(Recipe):
+    objects = DessertManager()
+
+    class Meta:
+        proxy = True
+
+
+class DrinkRecipe(Recipe):
+    objects = DrinkManager()
+
+    class Meta:
+        proxy = True
+
+
+class AppetizerRecipe(Recipe):
+    objects = AppetizerManager()
+
+    class Meta:
+        proxy = True
+
+
+class BakeryRecipe(Recipe):
+    objects = BakeryManager()
+
+    class Meta:
+        proxy = True
 
 
 class IngredientQuantity(models.Model):

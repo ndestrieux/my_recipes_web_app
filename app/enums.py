@@ -23,3 +23,13 @@ class UnitChoice(Enum):
     lb = "pound"
     oz = "ounce"
     piece = "piece"
+
+
+class CategoryChoice(Enum):
+    breakfast = "breakfast"
+    lunch = "lunch"
+    dinner = "dinner"
+    dessert = "dessert"
+    drink = "drink"
+    appetizer = "appetizer"
+    bakery = "bakery"
