@@ -61,17 +61,19 @@ FK  recipe: int
     <id>UMLClass</id>
     <coordinates>
       <x>530</x>
-      <y>100</y>
+      <y>70</y>
       <w>170</w>
-      <h>160</h>
+      <h>190</h>
     </coordinates>
     <panel_attributes>Recipe
 --
 PK  id: int
       name: text
+      category: choice
       content: text
       nb_of_people: int
       image: image
+      thumbnail: image
       language: choice
       date: date
 FK  user: int
