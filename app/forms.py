@@ -75,6 +75,7 @@ class RecipeForm(forms.ModelForm):
             "nb_of_people",
             "image",
             "language",
+            "category",
         ]
 
     def __init__(self, *args, **kwargs):
