@@ -68,7 +68,7 @@
                     {% if request.user.is_authenticated %}
                     <form class="column" value="{{ recipe.id }}">
                         {% csrf_token %}
-                        <div class="btn-group">
+                        <div class="btn-group vote-group">
                             <button class="fa fa-thumbs-up vote {% if vote.vote == 'UP' %}active{% endif %}"
                                     id="thumbUp"
                                     value="UP"></button>
