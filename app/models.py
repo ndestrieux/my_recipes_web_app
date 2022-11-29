@@ -50,6 +50,7 @@ class Recipe(models.Model):
     )
 
     class Meta:
+        ordering = ["-date"]
         constraints = [
             models.UniqueConstraint(fields=["name", "language"], name="unique_recipe")
         ]
