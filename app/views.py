@@ -8,7 +8,9 @@ from extra_views import CreateWithInlinesView, NamedFormsetsMixin
 
 from app.forms import (IngredientQuantityFormSet, RecipeForm, UserLoginForm,
                        UserRegistrationForm)
-from app.models import Ingredient, Recipe, VoteHistory
+from app.models import (AppetizerRecipe, BakeryRecipe, BreakfastRecipe,
+                        DessertRecipe, DinnerRecipe, DrinkRecipe, Ingredient,
+                        LunchRecipe, Recipe, VoteHistory)
 
 
 class UserRegistrationView(CreateView):
@@ -56,6 +58,18 @@ class RecipeCreationView(
 class RecipeListView(ListView):
     model = Recipe
     template_name = "app/recipe_list.html"
+
+    def get_context_data(self, **kwargs):
+        truncate_to = 3
+        kwargs["recipes_overview"] = Recipe.objects.all()[:truncate_to]
+        kwargs["breakfasts"] = BreakfastRecipe.objects.all()[:truncate_to]
+        kwargs["lunches"] = LunchRecipe.objects.all()[:truncate_to]
+        kwargs["dinners"] = DinnerRecipe.objects.all()[:truncate_to]
+        kwargs["desserts"] = DessertRecipe.objects.all()[:truncate_to]
+        kwargs["drinks"] = DrinkRecipe.objects.all()[:truncate_to]
+        kwargs["appetizers"] = AppetizerRecipe.objects.all()[:truncate_to]
+        kwargs["bakeries"] = BakeryRecipe.objects.all()[:truncate_to]
+        return super().get_context_data(**kwargs)
 
 
 class RecipeDetailView(DetailView):
