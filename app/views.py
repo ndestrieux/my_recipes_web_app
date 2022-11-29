@@ -72,6 +72,69 @@ class RecipeListView(ListView):
         return super().get_context_data(**kwargs)
 
 
+class RecipeBreakfastListView(ListView):
+    model = BreakfastRecipe
+    template_name = "app/recipe_category_list.html"
+
+    def get_context_data(self, **kwargs):
+        kwargs["list_name"] = "Breakfasts"
+        return super().get_context_data(**kwargs)
+
+
+class RecipeLunchListView(ListView):
+    model = LunchRecipe
+    template_name = "app/recipe_category_list.html"
+
+    def get_context_data(self, **kwargs):
+        kwargs["list_name"] = "Lunches"
+        return super().get_context_data(**kwargs)
+
+
+class RecipeDinnerListView(ListView):
+    model = DinnerRecipe
+    template_name = "app/recipe_category_list.html"
+
+    def get_context_data(self, **kwargs):
+        kwargs["list_name"] = "Dinners"
+        return super().get_context_data(**kwargs)
+
+
+class RecipeDessertListView(ListView):
+    model = DessertRecipe
+    template_name = "app/recipe_category_list.html"
+
+    def get_context_data(self, **kwargs):
+        kwargs["list_name"] = "Desserts"
+        return super().get_context_data(**kwargs)
+
+
+class RecipeDrinkListView(ListView):
+    model = DrinkRecipe
+    template_name = "app/recipe_category_list.html"
+
+    def get_context_data(self, **kwargs):
+        kwargs["list_name"] = "Drinks"
+        return super().get_context_data(**kwargs)
+
+
+class RecipeAppetizerListView(ListView):
+    model = AppetizerRecipe
+    template_name = "app/recipe_category_list.html"
+
+    def get_context_data(self, **kwargs):
+        kwargs["list_name"] = "Appetizers"
+        return super().get_context_data(**kwargs)
+
+
+class RecipeBakeryListView(ListView):
+    model = BakeryRecipe
+    template_name = "app/recipe_category_list.html"
+
+    def get_context_data(self, **kwargs):
+        kwargs["list_name"] = "Bakery"
+        return super().get_context_data(**kwargs)
+
+
 class RecipeDetailView(DetailView):
     model = Recipe
 

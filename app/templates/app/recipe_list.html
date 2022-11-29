@@ -62,7 +62,7 @@
     </div>
     <div class="container"><hr></div>
     <div class="container">
-        <h2><a href="#">Lunches</a></h2>
+        <h2><a href="{% url 'lunch-list' %}">Lunches</a></h2>
         {% for lunch in lunches %}
         {% if forloop.counter0|divisibleby:4 %}
         <div class="row grid-style">{% endif %}
@@ -90,7 +90,7 @@
     </div>
     <div class="container"><hr></div>
     <div class="container">
-        <h2><a href="#">Dinners</a></h2>
+        <h2><a href="{% url 'dinner-list' %}">Dinners</a></h2>
         {% for dinner in dinners %}
         {% if forloop.counter0|divisibleby:4 %}
         <div class="row grid-style">{% endif %}
@@ -118,7 +118,7 @@
     </div>
     <div class="container"><hr></div>
     <div class="container">
-        <h2><a href="#">Desserts</a></h2>
+        <h2><a href="{% url 'dessert-list' %}">Desserts</a></h2>
         {% for dessert in desserts %}
         {% if forloop.counter0|divisibleby:4 %}
         <div class="row grid-style">{% endif %}
@@ -146,7 +146,7 @@
     </div>
         <div class="container"><hr></div>
     <div class="container">
-        <h2><a href="#">Drinks</a></h2>
+        <h2><a href="{% url 'drink-list' %}">Drinks</a></h2>
         {% for drink in drinks %}
         {% if forloop.counter0|divisibleby:4 %}
         <div class="row grid-style">{% endif %}
@@ -174,7 +174,7 @@
     </div>
     <div class="container"><hr></div>
     <div class="container">
-        <h2><a href="#">Appetizers</a></h2>
+        <h2><a href="{% url 'appetizer-list' %}">Appetizers</a></h2>
         {% for appetizer in appetizers %}
         {% if forloop.counter0|divisibleby:4 %}
         <div class="row grid-style">{% endif %}
@@ -202,7 +202,7 @@
     </div>
     <div class="container"><hr></div>
     <div class="container">
-        <h2><a href="#">Bakery</a></h2>
+        <h2><a href="{% url 'bakery-list' %}">Bakery</a></h2>
         {% for bakery in bakeries %}
         {% if forloop.counter0|divisibleby:4 %}
         <div class="row grid-style">{% endif %}
