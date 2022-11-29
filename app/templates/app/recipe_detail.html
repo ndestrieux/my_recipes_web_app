@@ -29,11 +29,11 @@
                     fetch(ranking_url, {
                         headers:{
                             'Accept': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+                            'X-Requested-With': 'XMLHttpRequest',
                         },
                     })
                     .then(response => {
-                        return response.json(); //Convert response to JSON
+                        return response.json();
                     })
                     .then(data => {
                         ranking_html.html(data["up"] - data["down"]);
