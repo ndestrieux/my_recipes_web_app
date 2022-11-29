@@ -16,25 +16,16 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.auth.views import LogoutView
 from django.urls import include, path
 from django.views.generic.base import RedirectView
-from rest_framework.routers import DefaultRouter
 
-from api.views import RankingDetailView, VoteHistoryCreateView
-from app.views import (HomePageView, RecipeCreationView, RecipeDetailView,
-                       RecipeListView, UserLoginView, UserRegistrationView)
+from api.urls import api_patterns
+from app.urls import app_patterns
+
 
 urlpatterns = [
     path("", RedirectView.as_view(url="home", permanent=False), name="redirect"),
+    path("", include(app_patterns)),
+    path("api/", include(api_patterns)),
     path("admin/", admin.site.urls),
-    path("register/", UserRegistrationView.as_view(), name="register"),
-    path("login/", UserLoginView.as_view(), name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
-    path("home/", HomePageView.as_view(), name="home"),
-    path("newrecipe/", RecipeCreationView.as_view(), name="add-recipe"),
-    path("recipes/", RecipeListView.as_view(), name="recipe-list"),
-    path("recipe/<int:pk>/", RecipeDetailView.as_view(), name="recipe-detail"),
-    path("api/vote/", VoteHistoryCreateView.as_view(), name="vote"),
-    path("api/ranking/<int:pk>/", RankingDetailView.as_view(), name="ranking"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
