@@ -61,12 +61,12 @@
 <div id="wrapper">
     <section class="jumbotron text-center" id="cta">
         <div class="container">
-            <a href="food-index.html"><img alt="" class="img-fluid"
+            <a href="{% url 'home' %}"><img alt="" class="img-fluid"
                                            src="{% static 'images/version/food-logo.png' %}"></a>
-            <p>“Spaghetti can be eaten most successfully if you inhale it like a vacuum cleaner.” – Sofia Loren</p>
-            {% if user.is_authenticated %}
-            <a class="btn btn-primary" href="#">View Liked Recipes</a>
-            {% endif %}
+            <div class="transbox">
+                <p>“Spaghetti can be eaten most successfully if you inhale it like a vacuum cleaner.”</p>
+                <p class="quote-author">– Sofia Loren</p>
+            </div>
         </div>
     </section>
 
