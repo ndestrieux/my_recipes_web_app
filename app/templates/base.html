@@ -82,15 +82,30 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'home' %}">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'recipe-list' %}">Recipes</a>
+                        <li class="btn-group nav-item">
+                            <a type="button" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false" href="">
+                                Recipes
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{% url 'breakfast-list' %}">Breakfasts</a>
+                                <a class="dropdown-item" href="{% url 'lunch-list' %}">Lunches</a>
+                                <a class="dropdown-item" href="{% url 'dinner-list' %}">Dinners</a>
+                                <a class="dropdown-item" href="{% url 'dessert-list' %}">Desserts</a>
+                                <a class="dropdown-item" href="{% url 'drink-list' %}">Drinks</a>
+                                <a class="dropdown-item" href="{% url 'appetizer-list' %}">Appetizers</a>
+                                <a class="dropdown-item" href="{% url 'bakery-list' %}">Bakery</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'recipe-list' %}">View all recipes</a>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Contact</a>
                         </li>
                         {% if user.is_authenticated %}
                         <li class="btn-group nav-item">
-                            <a href="" type="button " class="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a href="" type="button" class="nav-link dropdown-toggle" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
                                 Welcome, {{ user }}
                             </a>
                             <div class="dropdown-menu">
