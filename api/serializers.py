@@ -16,18 +16,14 @@ class VoteHistorySerializer(ModelSerializer):
         user = self.context["current_user"]
         recipe = validated_data["recipe"]
         vote = validated_data["vote"]
-        try:
-            user_vote = VoteHistory.objects.get(user=user, recipe=recipe)
-        except ObjectDoesNotExist:
-            user_vote = VoteHistory.objects.create(user=user, **validated_data)
-        else:
+        user_vote, created = VoteHistory.objects.get_or_create(user=user, recipe=recipe, defaults={"vote": vote})
+        if created is False:
             if user_vote.vote == vote:
                 user_vote.delete()
             else:
                 user_vote.vote = vote
                 user_vote.save(update_fields=["vote"])
-        finally:
-            return user_vote
+        return user_vote
 
 
 class RankingSerializer(ModelSerializer):
