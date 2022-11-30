@@ -69,11 +69,11 @@
                     <form class="column" value="{{ recipe.id }}">
                         {% csrf_token %}
                         <div class="btn-group vote-group">
-                            <button class="fa fa-thumbs-up vote {% if vote.vote == 'UP' %}active{% endif %}"
+                            <button class="fa fa-thumbs-up vote-group-element vote {% if vote.vote == 'UP' %}active{% endif %}"
                                     id="thumbUp"
                                     value="UP"></button>
-                            <button class="vote"><div id="likeCounter">{{ recipe.ranking.overall }}</div></button>
-                            <button class="fa fa-thumbs-down vote {% if vote.vote == 'DOWN' %}active{% endif %}"
+                            <button class="vote-group-element" disabled><div id="likeCounter">{{ recipe.ranking.overall }}</div></button>
+                            <button class="fa fa-thumbs-down vote-group-element vote {% if vote.vote == 'DOWN' %}active{% endif %}"
                                     id="thumbDown"
                                     value="DOWN"></button>
                         </div>
