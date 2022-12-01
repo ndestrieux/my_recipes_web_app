@@ -45,6 +45,7 @@ class Recipe(models.Model):
         null=False,
     )
     date = models.DateField(auto_now_add=True)
+    is_favorited_by = models.ManyToManyField(User, related_name="favorites")
     posted_by = models.ForeignKey(
         User, blank=False, null=False, on_delete=models.DO_NOTHING
     )
