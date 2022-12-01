@@ -1,7 +1,6 @@
-from django.core.exceptions import ObjectDoesNotExist
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import BooleanField, ModelSerializer
 
-from app.models import VoteHistory, Ranking
+from app.models import Ranking, Recipe, VoteHistory
 
 
 class VoteHistorySerializer(ModelSerializer):
@@ -16,7 +15,9 @@ class VoteHistorySerializer(ModelSerializer):
         user = self.context["current_user"]
         recipe = validated_data["recipe"]
         vote = validated_data["vote"]
-        user_vote, created = VoteHistory.objects.get_or_create(user=user, recipe=recipe, defaults={"vote": vote})
+        user_vote, created = VoteHistory.objects.get_or_create(
+            user=user, recipe=recipe, defaults={"vote": vote}
+        )
         if created is False:
             if user_vote.vote == vote:
                 user_vote.delete()
@@ -29,4 +30,28 @@ class VoteHistorySerializer(ModelSerializer):
 class RankingSerializer(ModelSerializer):
     class Meta:
         model = Ranking
-        fields = ["pk", "up", "down", ]
+        fields = [
+            "pk",
+            "up",
+            "down",
+        ]
+
+
+class RecipeUpdateFavoritesSerializer(ModelSerializer):
+    is_favorited_by = BooleanField()
+
+    class Meta:
+        model = Recipe
+        fields = [
+            "is_favorited_by",
+        ]
+
+    def update(self, instance, validated_data):
+        user = self.context["current_user"]
+        favorite = validated_data["is_favorited_by"]
+        if favorite:
+            instance.is_favorited_by.add(user)
+        else:
+            instance.is_favorited_by.remove(user)
+        instance.save()
+        return instance
