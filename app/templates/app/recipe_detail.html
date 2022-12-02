@@ -73,6 +73,34 @@
                 }
             });
         });
+        $("form").on("click", "button", function(event){
+            event.preventDefault();
+            let recipe_id = $(this).parents("form").attr("value");
+            let text = $(this).prev("textarea");
+            let data = {
+                "recipe": recipe_id,
+                "text": text.val(),
+            };
+            $.ajax({
+                type: "POST",
+                headers:{
+                    "X-CSRFToken": '{{ csrf_token }}',
+                },
+                url: "{% url "comment" %}",
+                data: data,
+                success: function(data){
+                    text.val('');
+                    let comment_section = $(".comments-list");
+                    let new_comment = $("#comment_empty").clone().removeAttr("hidden", "id");
+                    new_comment.find("h4.user_name").prepend("{{ user }}");
+                    new_comment.find("p").append(data.text);
+                    comment_section.append(new_comment);
+                },
+                error: function(rs, e){
+                  console.log(rs.responseText);
+                }
+            });
+        });
     })
 </script>
 {% endblock %}
