@@ -1,7 +1,7 @@
 from django.urls import path
 
-from api.views import (RankingDetailView, RecipeUpdateFavoritesView,
-                       VoteHistoryCreateView, CommentCreateView)
+from api.views import (CommentCreateView, RankingDetailView,
+                       RecipeUpdateFavoritesView, VoteHistoryCreateView)
 
 api_patterns = [
     path("vote/", VoteHistoryCreateView.as_view(), name="vote"),
@@ -11,5 +11,5 @@ api_patterns = [
         RecipeUpdateFavoritesView.as_view(),
         name="favorite",
     ),
-    path("comment/", CommentCreateView.as_view(), name="comment")
+    path("comment/", CommentCreateView.as_view(), name="comment"),
 ]

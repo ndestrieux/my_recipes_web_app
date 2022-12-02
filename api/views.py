@@ -1,16 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms.models import model_to_dict
+from rest_framework import status
 from rest_framework.generics import (CreateAPIView, RetrieveAPIView,
                                      UpdateAPIView)
-
 from rest_framework.response import Response
-from rest_framework import status
 
-
-from api.serializers import (RankingSerializer,
+from api.serializers import (CommentSerializer, RankingSerializer,
                              RecipeUpdateFavoritesSerializer,
-                             VoteHistorySerializer, CommentSerializer)
-from app.models import Ranking, Recipe, VoteHistory, Comment
+                             VoteHistorySerializer)
+from app.models import Comment, Ranking, Recipe, VoteHistory
 
 # Create your views here.
 

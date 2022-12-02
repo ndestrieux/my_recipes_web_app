@@ -1,6 +1,6 @@
 from rest_framework.serializers import BooleanField, ModelSerializer
 
-from app.models import Ranking, Recipe, VoteHistory, Comment
+from app.models import Comment, Ranking, Recipe, VoteHistory
 
 
 class VoteHistorySerializer(ModelSerializer):
@@ -60,7 +60,10 @@ class RecipeUpdateFavoritesSerializer(ModelSerializer):
 class CommentSerializer(ModelSerializer):
     class Meta:
         model = Comment
-        fields = ["recipe", "text", ]
+        fields = [
+            "recipe",
+            "text",
+        ]
 
     def create(self, validated_data):
         user = self.context["current_user"]
