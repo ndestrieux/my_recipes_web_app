@@ -7,6 +7,7 @@ from app.views import (HomePageView, RecipeAppetizerListView,
                        RecipeDetailView, RecipeDinnerListView,
                        RecipeDrinkListView, RecipeListView,
                        RecipeLunchListView, UserLoginView,
+                       MyRecipeListView,
                        UserRegistrationView)
 
 app_patterns = [
@@ -23,5 +24,6 @@ app_patterns = [
     path("recipes/drink/", RecipeDrinkListView.as_view(), name="drink-list"),
     path("recipes/appetizer/", RecipeAppetizerListView.as_view(), name="appetizer-list"),
     path("recipes/bakery/", RecipeBakeryListView.as_view(), name="bakery-list"),
+    path("recipes/my-recipes/", MyRecipeListView.as_view(), name="my-recipes"),
     path("recipe/<int:pk>/", RecipeDetailView.as_view(), name="recipe-detail"),
 ]

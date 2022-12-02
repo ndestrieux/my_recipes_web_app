@@ -72,6 +72,12 @@ class RecipeListView(ListView):
     template_name = "app/recipe_list.html"
 
 
+class MyRecipeListView(LoginRequiredMixin, RecipeListView):
+    def get_queryset(self):
+        queryset = Recipe.objects.filter(posted_by=self.request.user)
+        return queryset
+
+
 class RecipeBreakfastListView(ListView):
     model = BreakfastRecipe
     template_name = "app/recipe_category_list.html"
