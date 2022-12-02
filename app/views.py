@@ -78,6 +78,12 @@ class MyRecipeListView(LoginRequiredMixin, RecipeListView):
         return queryset
 
 
+class FavoriteRecipeListView(LoginRequiredMixin, RecipeListView):
+    def get_queryset(self):
+        queryset = Recipe.objects.filter(is_favorited_by=self.request.user)
+        return queryset
+
+
 class RecipeBreakfastListView(ListView):
     model = BreakfastRecipe
     template_name = "app/recipe_category_list.html"
