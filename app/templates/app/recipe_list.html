@@ -6,14 +6,16 @@
 <section class="section wb">
     <div class="container">
         <h2>All recipes</h2>
-        {% for recipe in recipes_overview %}
+        {% for recipe in object_list %}
         {% if forloop.counter0|divisibleby:4 %}
         <div class="row grid-style">{% endif %}
             <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
                 <div class="blog-box">
                     <div class="post-media">
-                        <a href="{% url 'recipe-detail' recipe.id %}">
+                        <a href="{% url recipe.category|add:'-list' %}">
                             <span class="detail">{{ recipe.category }}</span>
+                        </a>
+                        <a href="{% url 'recipe-detail' recipe.id %}">
                             <img class="img-fluid"
                                  onerror="this.src='{% static 'images/default-image.jpg' %}';"
                                  src="{{ recipe.thumbnail.url }}">
@@ -24,202 +26,6 @@
                         <h4><a href="{% url 'recipe-detail' recipe.id %}">{{ recipe.name }}</a></h4>
                         <small><a href="{% url 'recipe-detail' recipe.id %}" title="">{{ recipe.date }}</a></small>
                         <small><a href="{% url 'recipe-detail' recipe.id %}" title="">by {{ recipe.posted_by }}</a></small>
-                    </div>
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:4 or forloop.last %}
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
-    <div class="container"><hr></div>
-    <div class="container">
-        <h2><a href="{% url 'breakfast-list' %}">Breakfasts</a></h2>
-        {% for breakfast in breakfasts %}
-        {% if forloop.counter0|divisibleby:4 %}
-        <div class="row grid-style">{% endif %}
-            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                <div class="blog-box">
-                    <div class="post-media">
-                        <a href="{% url 'recipe-detail' breakfast.id %}">
-                            <img class="img-fluid"
-                                 onerror="this.src='{% static 'images/default-image.jpg' %}';"
-                                 src="{{ breakfast.thumbnail.url }}">
-                            <div class="hovereffect"></div>
-                        </a>
-                    </div>
-                    <div class="blog-meta big-meta">
-                        <h4><a href="{% url 'recipe-detail' breakfast.id %}">{{ breakfast.name }}</a></h4>
-                        <small><a href="{% url 'recipe-detail' breakfast.id %}" title="">{{ breakfast.date }}</a></small>
-                        <small><a href="{% url 'recipe-detail' breakfast.id %}" title="">by {{ breakfast.posted_by }}</a></small>
-                    </div>
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:4 or forloop.last %}
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
-    <div class="container"><hr></div>
-    <div class="container">
-        <h2><a href="{% url 'lunch-list' %}">Lunches</a></h2>
-        {% for lunch in lunches %}
-        {% if forloop.counter0|divisibleby:4 %}
-        <div class="row grid-style">{% endif %}
-            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                <div class="blog-box">
-                    <div class="post-media">
-                        <a href="{% url 'recipe-detail' lunch.id %}">
-                            <img class="img-fluid"
-                                 onerror="this.src='{% static 'images/default-image.jpg' %}';"
-                                 src="{{ lunch.thumbnail.url }}">
-                            <div class="hovereffect"></div>
-                        </a>
-                    </div>
-                    <div class="blog-meta big-meta">
-                        <h4><a href="{% url 'recipe-detail' lunch.id %}">{{ lunch.name }}</a></h4>
-                        <small><a href="{% url 'recipe-detail' lunch.id %}" title="">{{ lunch.date }}</a></small>
-                        <small><a href="{% url 'recipe-detail' lunch.id %}" title="">by {{ lunch.posted_by }}</a></small>
-                    </div>
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:4 or forloop.last %}
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
-    <div class="container"><hr></div>
-    <div class="container">
-        <h2><a href="{% url 'dinner-list' %}">Dinners</a></h2>
-        {% for dinner in dinners %}
-        {% if forloop.counter0|divisibleby:4 %}
-        <div class="row grid-style">{% endif %}
-            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                <div class="blog-box">
-                    <div class="post-media">
-                        <a href="{% url 'recipe-detail' dinner.id %}">
-                            <img class="img-fluid"
-                                 onerror="this.src='{% static 'images/default-image.jpg' %}';"
-                                 src="{{ dinner.thumbnail.url }}">
-                            <div class="hovereffect"></div>
-                        </a>
-                    </div>
-                    <div class="blog-meta big-meta">
-                        <h4><a href="{% url 'recipe-detail' dinner.id %}">{{ dinner.name }}</a></h4>
-                        <small><a href="{% url 'recipe-detail' dinner.id %}" title="">{{ dinner.date }}</a></small>
-                        <small><a href="{% url 'recipe-detail' dinner.id %}" title="">by {{ dinner.posted_by }}</a></small>
-                    </div>
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:4 or forloop.last %}
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
-    <div class="container"><hr></div>
-    <div class="container">
-        <h2><a href="{% url 'dessert-list' %}">Desserts</a></h2>
-        {% for dessert in desserts %}
-        {% if forloop.counter0|divisibleby:4 %}
-        <div class="row grid-style">{% endif %}
-            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                <div class="blog-box">
-                    <div class="post-media">
-                        <a href="{% url 'recipe-detail' dessert.id %}">
-                            <img class="img-fluid"
-                                 onerror="this.src='{% static 'images/default-image.jpg' %}';"
-                                 src="{{ dessert.thumbnail.url }}">
-                            <div class="hovereffect"></div>
-                        </a>
-                    </div>
-                    <div class="blog-meta big-meta">
-                        <h4><a href="{% url 'recipe-detail' dessert.id %}">{{ dessert.name }}</a></h4>
-                        <small><a href="{% url 'recipe-detail' dessert.id %}" title="">{{ dessert.date }}</a></small>
-                        <small><a href="{% url 'recipe-detail' dessert.id %}" title="">by {{ dessert.posted_by }}</a></small>
-                    </div>
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:4 or forloop.last %}
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
-        <div class="container"><hr></div>
-    <div class="container">
-        <h2><a href="{% url 'drink-list' %}">Drinks</a></h2>
-        {% for drink in drinks %}
-        {% if forloop.counter0|divisibleby:4 %}
-        <div class="row grid-style">{% endif %}
-            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                <div class="blog-box">
-                    <div class="post-media">
-                        <a href="{% url 'recipe-detail' drink.id %}">
-                            <img class="img-fluid"
-                                 onerror="this.src='{% static 'images/default-image.jpg' %}';"
-                                 src="{{ drink.thumbnail.url }}">
-                            <div class="hovereffect"></div>
-                        </a>
-                    </div>
-                    <div class="blog-meta big-meta">
-                        <h4><a href="{% url 'recipe-detail' drink.id %}">{{ drink.name }}</a></h4>
-                        <small><a href="{% url 'recipe-detail' drink.id %}" title="">{{ drink.date }}</a></small>
-                        <small><a href="{% url 'recipe-detail' drink.id %}" title="">by {{ drink.posted_by }}</a></small>
-                    </div>
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:4 or forloop.last %}
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
-    <div class="container"><hr></div>
-    <div class="container">
-        <h2><a href="{% url 'appetizer-list' %}">Appetizers</a></h2>
-        {% for appetizer in appetizers %}
-        {% if forloop.counter0|divisibleby:4 %}
-        <div class="row grid-style">{% endif %}
-            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                <div class="blog-box">
-                    <div class="post-media">
-                        <a href="{% url 'recipe-detail' appetizer.id %}">
-                            <img class="img-fluid"
-                                 onerror="this.src='{% static 'images/default-image.jpg' %}';"
-                                 src="{{ appetizer.thumbnail.url }}">
-                            <div class="hovereffect"></div>
-                        </a>
-                    </div>
-                    <div class="blog-meta big-meta">
-                        <h4><a href="{% url 'recipe-detail' appetizer.id %}">{{ appetizer.name }}</a></h4>
-                        <small><a href="{% url 'recipe-detail' appetizer.id %}" title="">{{ appetizer.date }}</a></small>
-                        <small><a href="{% url 'recipe-detail' appetizer.id %}" title="">by {{ appetizer.posted_by }}</a></small>
-                    </div>
-                </div>
-            </div>
-            {% if forloop.counter|divisibleby:4 or forloop.last %}
-        </div>
-        {% endif %}
-        {% endfor %}
-    </div>
-    <div class="container"><hr></div>
-    <div class="container">
-        <h2><a href="{% url 'bakery-list' %}">Bakery</a></h2>
-        {% for bakery in bakeries %}
-        {% if forloop.counter0|divisibleby:4 %}
-        <div class="row grid-style">{% endif %}
-            <div class="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                <div class="blog-box">
-                    <div class="post-media">
-                        <a href="{% url 'recipe-detail' bakery.id %}">
-                            <img class="img-fluid"
-                                 onerror="this.src='{% static 'images/default-image.jpg' %}';"
-                                 src="{{ bakery.thumbnail.url }}">
-                            <div class="hovereffect"></div>
-                        </a>
-                    </div>
-                    <div class="blog-meta big-meta">
-                        <h4><a href="{% url 'recipe-detail' bakery.id %}">{{ bakery.name }}</a></h4>
-                        <small><a href="{% url 'recipe-detail' bakery.id %}" title="">{{ bakery.date }}</a></small>
-                        <small><a href="{% url 'recipe-detail' bakery.id %}" title="">by {{ bakery.posted_by }}</a></small>
                     </div>
                 </div>
             </div>
