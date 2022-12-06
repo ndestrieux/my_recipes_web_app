@@ -238,3 +238,6 @@ class Comment(models.Model):
     recipe = models.ForeignKey(
         Recipe, blank=False, null=False, on_delete=models.CASCADE
     )
+
+    class Meta:
+        ordering = ["-date"]
