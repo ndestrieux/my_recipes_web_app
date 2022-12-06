@@ -1,11 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.forms.models import model_to_dict
-from rest_framework import status
 from rest_framework.generics import (CreateAPIView, RetrieveAPIView,
-                                     UpdateAPIView)
-from rest_framework.response import Response
+                                     UpdateAPIView, ListAPIView)
 
-from api.serializers import (CommentSerializer, RankingSerializer,
+from api.serializers import (CommentCreateSerializer, CommentListSerializer, RankingSerializer,
                              RecipeUpdateFavoritesSerializer,
                              VoteHistorySerializer)
 from app.models import Comment, Ranking, Recipe, VoteHistory
@@ -44,9 +41,18 @@ class RecipeUpdateFavoritesView(LoginRequiredMixin, UpdateAPIView):
 
 class CommentCreateView(LoginRequiredMixin, CreateAPIView):
     model = Comment
-    serializer_class = CommentSerializer
+    serializer_class = CommentCreateSerializer
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
         context["current_user"] = self.request.user
         return context
+
+
+class CommentListView(LoginRequiredMixin, ListAPIView):
+    model = Comment
+    serializer_class = CommentListSerializer
+
+    def get_queryset(self):
+        recipe = self.kwargs["recipe"]
+        return Comment.objects.filter(recipe=recipe)

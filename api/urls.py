@@ -1,6 +1,6 @@
 from django.urls import path
 
-from api.views import (CommentCreateView, RankingDetailView,
+from api.views import (CommentCreateView, CommentListView, RankingDetailView,
                        RecipeUpdateFavoritesView, VoteHistoryCreateView)
 
 api_patterns = [
@@ -12,4 +12,5 @@ api_patterns = [
         name="favorite",
     ),
     path("comment/", CommentCreateView.as_view(), name="comment"),
+    path("comment/<int:recipe>/", CommentListView.as_view(), name="comment-list")
 ]

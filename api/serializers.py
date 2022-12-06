@@ -57,7 +57,7 @@ class RecipeUpdateFavoritesSerializer(ModelSerializer):
         return instance
 
 
-class CommentSerializer(ModelSerializer):
+class CommentCreateSerializer(ModelSerializer):
     class Meta:
         model = Comment
         fields = [
@@ -71,3 +71,10 @@ class CommentSerializer(ModelSerializer):
         text = validated_data["text"]
         comment = Comment.objects.create(user=user, recipe=recipe, text=text)
         return comment
+
+
+class CommentListSerializer(ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+
