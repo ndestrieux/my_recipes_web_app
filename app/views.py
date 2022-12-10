@@ -152,13 +152,14 @@ class RecipeDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         current_user = self.request.user
-        is_favorite = (
-            current_user in Recipe.objects.get(id=self.object.id).is_favorited_by.all()
-        )
-        try:
-            vote = VoteHistory.objects.get(user=current_user, recipe=self.object)
-        except ObjectDoesNotExist:
-            vote = None
-        kwargs["is_favorite"] = is_favorite
-        kwargs["vote"] = vote
+        if not current_user.is_anonymous:
+            is_favorite = (
+                current_user in Recipe.objects.get(id=self.object.id).is_favorited_by.all()
+            )
+            try:
+                vote = VoteHistory.objects.get(user=current_user, recipe=self.object)
+            except ObjectDoesNotExist:
+                vote = None
+            kwargs["is_favorite"] = is_favorite
+            kwargs["vote"] = vote
         return super().get_context_data(**kwargs)
