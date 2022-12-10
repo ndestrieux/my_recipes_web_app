@@ -879,7 +879,8 @@ div.tab button:hover {
 }
 
 .tw-button i,
-.fb-button i {
+.fb-button i,
+ .mail-button i {
     margin-right: 0.5rem;
 }
 
@@ -1749,4 +1750,11 @@ hr.invis3 {
 #thumbDown:hover  {
     transition:0.1s;
     transform:rotate(5deg) translate(0px, 1px);
+}
+
+.load-button    {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -18px;
 }

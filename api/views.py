@@ -55,4 +55,9 @@ class CommentListView(LoginRequiredMixin, ListAPIView):
 
     def get_queryset(self):
         recipe = self.kwargs["recipe"]
-        return Comment.objects.filter(recipe=recipe)
+        queryset = Comment.objects.filter(recipe=recipe)
+        if "visible" in self.request.GET:
+            upper = int(self.request.GET.get("visible"))
+            lower = upper - 5
+            queryset = queryset[lower:upper]
+        return queryset

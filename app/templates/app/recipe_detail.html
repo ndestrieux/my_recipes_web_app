@@ -3,105 +3,18 @@
 {% load static%}
 
 {% block head_scripts %}
+<script src="{% static 'js/favorite.js' %}"></script>
+<script src="{% static 'js/vote.js' %}"></script>
+<script src="{% static 'js/comment.js' %}"></script>
 <script>
-    $(document).ready(function(){
-        $("form").on("click", ".favorite", function(event){
-            event.preventDefault();
-            let recipe_id = $(this).parents("form").attr("value");
-            let url = $(this).attr("href");
-            let favorite
-            if ($(this).hasClass("active")) {
-                $(this).removeClass("active");
-                favorite = false;
-            } else {
-                $(this).addClass("active");
-                favorite = true;
-            }
-            let data = {
-                "is_favorited_by": favorite,
-            };
-            $.ajax({
-                type: "PUT",
-                headers:{
-                    "X-CSRFToken": '{{ csrf_token }}',
-                },
-                url: url,
-                data: data,
-                error: function(rs, e){
-                  console.log(rs.responseText);
-                }
-            });
-        });
-        $("form").on("click", ".vote", function(event){
-            event.preventDefault();
-            let recipe_id = $(this).parents("form").attr("value");
-            if ($(this).hasClass("active")) {
-                $(this).removeClass("active");
-            } else {
-                $(".vote").removeClass("active");
-                $(this).addClass("active");
-            }
-            let data = {
-                    "recipe": recipe_id,
-                    "vote": $(this).attr("value"),
-            };
-            $.ajax({
-                type: "POST",
-                headers:{
-                    "X-CSRFToken": '{{ csrf_token }}',
-                },
-                url: "{% url "vote" %}",
-                data: data,
-                success: function(){
-                    let ranking_url = "{% url "ranking" recipe.ranking.id %}";
-                    let ranking_html = $("#likeCounter");
-                    fetch(ranking_url, {
-                        headers:{
-                            'Accept': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest',
-                        },
-                    })
-                    .then(response => {
-                        return response.json();
-                    })
-                    .then(data => {
-                        ranking_html.html(data["up"] - data["down"]);
-                    })
-                },
-                error: function(rs, e){
-                  console.log(rs.responseText);
-                }
-            });
-        });
-        $("form").on("click", "button", function(event){
-            event.preventDefault();
-            let recipe_id = $(this).parents("form").attr("value");
-            let text = $(this).prev("textarea");
-            let data = {
-                "recipe": recipe_id,
-                "text": text.val(),
-            };
-            $.ajax({
-                type: "POST",
-                headers:{
-                    "X-CSRFToken": '{{ csrf_token }}',
-                },
-                url: "{% url "comment" %}",
-                data: data,
-                success: function(data){
-                    text.val('');
-                    let comment_section = $(".comments-list");
-                    let new_comment = $("#comment_empty").clone().removeAttr("hidden", "id");
-                    new_comment.find("h4.user_name").prepend("{{ user }}");
-                    new_comment.find("p").append(data.text);
-                    comment_section.append(new_comment);
-                },
-                error: function(rs, e){
-                  console.log(rs.responseText);
-                }
-            });
-        });
-    })
+    const currentUser = "{{ user }}";
+    const csrfToken = "{{ csrf_token }}";
+    const favoriteUrl = "{% url 'favorite' recipe.id %}";
+    const voteUrl = "{% url "vote" %}";
+    const rankingUrl = "{% url "ranking" recipe.ranking.id %}";
+    const createCommentUrl = "{% url "comment" %}";
+    const commentListUrl = "{% url "comment-list" recipe.id %}";
+    const commentListLength = {{ recipe.comment_set.all|length }};
 </script>
 {% endblock %}
 
@@ -123,10 +36,10 @@
                 <div class="row">
                     <h3 class="column" style="width: 70%">{{ recipe.name }}</h3>
                     {% if request.user.is_authenticated %}
-                    <form class="column" value="{{ recipe.id }}">
+                    <form class="column appreciation-form" value="{{ recipe.id }}">
                         {% csrf_token %}
                         <div class="btn-group vote-group">
-                            <button class="fa fa-heart vote-group-element favorite {% if is_favorite %}active{% endif %}" href="{% url 'favorite' recipe.id %}"></button>
+                            <button class="fa fa-heart vote-group-element favorite {% if is_favorite %}active{% endif %}"></button>
                             <button class="fa fa-thumbs-up vote-group-element vote {% if vote.vote == 'UP' %}active{% endif %}"
                                     id="thumbUp"
                                     value="UP"></button>
@@ -152,6 +65,8 @@
                         <li><a class="tw-button btn btn-primary" href="#"><i class="fa fa-twitter"></i> <span
                                 class="down-mobile">Tweet on Twitter</span></a></li>
                         <li><a class="gp-button btn btn-primary" href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a class="mail-button btn btn-primary" href="#"><i class="fa fa-envelope"></i><span
+                                class="down-mobile">Send to a friend</span></a></li>
                     </ul>
                 </div><!-- end post-sharing -->
             </div><!-- end title -->
@@ -189,6 +104,8 @@
                         <li><a class="tw-button btn btn-primary" href="#"><i class="fa fa-twitter"></i> <span
                                 class="down-mobile">Tweet on Twitter</span></a></li>
                         <li><a class="gp-button btn btn-primary" href="#"><i class="fa fa-google-plus"></i></a></li>
+                        <li><a class="mail-button btn btn-primary" href="#"><i class="fa fa-envelope"></i><span
+                                class="down-mobile">Send to a friend</span></a></li>
                     </ul>
                 </div><!-- end post-sharing -->
             </div><!-- end title -->
@@ -244,30 +161,35 @@
                                             <div class="row">
                                                 <div class="col-lg-12">
                                                     <div class="comments-list">
-                                                        {% for comment in recipe.comment_set.all %}
+<!--                                                        {% for comment in recipe.comment_set.all %}-->
+<!--                                                            <div class="media">-->
+<!--    &lt;!&ndash;                                                            <a class="media-left" href="#">&ndash;&gt;-->
+<!--    &lt;!&ndash;                                                                <img src="upload/author.jpg" alt="" class="rounded-circle">&ndash;&gt;-->
+<!--    &lt;!&ndash;                                                            </a>&ndash;&gt;-->
+<!--                                                                <div class="media-body">-->
+<!--                                                                    <h4 class="media-heading user_name">{{ comment.user }}<small>{{ comment.date }}</small></h4>-->
+<!--                                                                    <p>{{ comment.text }}</p>-->
+<!--    &lt;!&ndash;                                                                <a href="#" class="btn btn-primary btn-sm">Reply</a>&ndash;&gt;-->
+<!--                                                                </div>-->
+<!--                                                            </div>-->
+<!--                                                        {% endfor %}-->
+                                                        <div id="comment_empty" hidden>
                                                             <div class="media">
     <!--                                                            <a class="media-left" href="#">-->
     <!--                                                                <img src="upload/author.jpg" alt="" class="rounded-circle">-->
     <!--                                                            </a>-->
                                                                 <div class="media-body">
-                                                                    <h4 class="media-heading user_name">{{ comment.user }}<small>{{ comment.date }}</small></h4>
-                                                                    <p>{{ comment.text }}</p>
-    <!--                                                                <a href="#" class="btn btn-primary btn-sm">Reply</a>-->
-                                                                </div>
-                                                            </div>
-                                                        {% endfor %}
-                                                        <div class="media" id="comment_empty" hidden>
-    <!--                                                            <a class="media-left" href="#">-->
-    <!--                                                                <img src="upload/author.jpg" alt="" class="rounded-circle">-->
-    <!--                                                            </a>-->
-                                                                <div class="media-body">
-                                                                    <h4 class="media-heading user_name"><small>Just now</small></h4>
+                                                                    <h4 class="media-heading user_name"><small></small></h4>
                                                                     <p></p>
     <!--                                                                <a href="#" class="btn btn-primary btn-sm">Reply</a>-->
                                                                 </div>
                                                             </div>
+                                                        </div>
                                                     </div>
                                                 </div><!-- end col -->
+                                                <div class="load-button">
+                                                    <button type="button" class="btn btn-primary">More comments</button>
+                                                </div>
                                             </div><!-- end row -->
                                         </div><!-- end custom-box -->
 
@@ -277,7 +199,7 @@
                                             <h4 class="small-title">Leave a Comment</h4>
                                             <div class="row">
                                                 <div class="col-lg-12">
-                                                    <form class="form-wrapper" value="{{ recipe.id }}">
+                                                    <form class="form-wrapper comment-form" value="{{ recipe.id }}">
                                                         <textarea class="form-control" placeholder="Your comment"></textarea>
                                                         <button type="submit" class="btn btn-primary">Submit Comment</button>
                                                     </form>
