@@ -1,4 +1,4 @@
-from rest_framework.serializers import BooleanField, ModelSerializer
+from rest_framework.serializers import BooleanField, ModelSerializer, SlugRelatedField
 
 from app.models import Comment, Ranking, Recipe, VoteHistory
 
@@ -74,6 +74,7 @@ class CommentCreateSerializer(ModelSerializer):
 
 
 class CommentListSerializer(ModelSerializer):
+    user = SlugRelatedField(read_only=True, slug_field='username')
     class Meta:
         model = Comment
         fields = "__all__"
