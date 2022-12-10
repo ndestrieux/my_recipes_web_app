@@ -145,3 +145,8 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "app/media")
 MEDIA_URL = "app/media/"
+
+REST_FRAMEWORK = {
+    'DATETIME_FORMAT': "%b. %d %Y %H:%M:%S",
+}
+
