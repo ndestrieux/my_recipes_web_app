@@ -49,7 +49,7 @@ class RecipeUpdateFavoritesSerializer(ModelSerializer):
     def update(self, instance, validated_data):
         user = self.context["current_user"]
         favorite = validated_data["is_favorited_by"]
-        if favorite:
+        if favorite is True:
             instance.is_favorited_by.add(user)
         else:
             instance.is_favorited_by.remove(user)
