@@ -150,3 +150,8 @@ REST_FRAMEWORK = {
     'DATETIME_FORMAT': "%b. %d %Y %H:%M:%S",
 }
 
+EMAIL_BACKEND = "django_ses.SESBackend"
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SES_REGION_NAME = 'eu-central-1'
+AWS_SES_REGION_ENDPOINT = 'email.eu-central-1.amazonaws.com'
