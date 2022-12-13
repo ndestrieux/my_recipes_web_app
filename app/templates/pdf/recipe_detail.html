@@ -1,0 +1,36 @@
+{% extends "../pdf/base.html" %}
+
+{% load static %}
+
+{% block content %}
+
+
+<div class="text-center">
+    <img src="{{ recipe.image.path }}">
+</div>
+<div class="row">
+    <h3 class="column" style="width: 70%">{{ recipe.name }}</h3>
+</div>
+<small>{{ recipe.category }}</small>
+<div class="blog-meta big-meta">
+    <small>{{ recipe.date }}</small> /
+    <small>by {{ recipe.posted_by }}</small>
+</div>
+<div class="blog-content">
+    <h5>Ingredients</h5>
+    <ul>
+        {% for ingredient in recipe.ingredientquantity_set.all %}
+        <li>{{ ingredient.ingredient }}:
+            {{ ingredient.quantity }}
+            {% if ingredient.unit %}{{ ingredient.unit }}{% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h5>Steps</h5>
+    <p>
+        {{ recipe.content }}
+    </p>
+</div>
+
+{% endblock %}

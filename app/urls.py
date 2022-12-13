@@ -7,7 +7,7 @@ from app.views import (FavoriteRecipeListView, HomePageView, MyRecipeListView,
                        RecipeDessertListView, RecipeDetailView,
                        RecipeDinnerListView, RecipeDrinkListView,
                        RecipeListView, RecipeLunchListView, UserLoginView,
-                       UserRegistrationView)
+                       UserRegistrationView, GeneratePdf)
 
 app_patterns = [
     path("register/", UserRegistrationView.as_view(), name="register"),
@@ -32,4 +32,5 @@ app_patterns = [
         "recipes/favorites/", FavoriteRecipeListView.as_view(), name="favorite-recipes"
     ),
     path("recipe/<int:pk>/", RecipeDetailView.as_view(), name="recipe-detail"),
+    path('recipe/<int:pk>/pdf/', GeneratePdf.as_view(), name="generate-pdf"),
 ]

@@ -1,7 +1,9 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse, Http404, FileResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin
@@ -11,6 +13,7 @@ from app.forms import (IngredientQuantityFormSet, RecipeForm, UserLoginForm,
 from app.models import (AppetizerRecipe, BakeryRecipe, BreakfastRecipe,
                         DessertRecipe, DinnerRecipe, DrinkRecipe, Ingredient,
                         LunchRecipe, Recipe, VoteHistory)
+from app.utils import render_to_pdf
 
 
 class UserRegistrationView(CreateView):
@@ -163,3 +166,20 @@ class RecipeDetailView(DetailView):
             kwargs["is_favorite"] = is_favorite
             kwargs["vote"] = vote
         return super().get_context_data(**kwargs)
+
+
+class GeneratePdf(DetailView):
+    model = Recipe
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        context["request"] = request
+        pdf = render_to_pdf('pdf/recipe_detail.html', context)
+        if pdf:
+            response =  HttpResponse(pdf, content_type='application/pdf')
+            filename = f"recipe - {self.object.name}.pdf"
+            content = f"inline; filename={filename}"
+            response['Content-Disposition'] = content
+            return response
+        return Http404("<h1>The file couldn't be generated</h1>")
