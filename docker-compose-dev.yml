@@ -36,6 +36,30 @@ services:
             retries: 6
         restart: always
 
+    redis:
+        image: redis:7.0.6-alpine
+        networks:
+            - network_no_internet
+        healthcheck:
+            test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
+
+    celery:
+        build: .
+        command: celery -A my_recipes_web_app worker -l INFO
+        volumes:
+            - .:/app
+        networks:
+            - network_no_internet
+            - network_internet
+        depends_on:
+            db:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+            app:
+                condition: service_started
+        restart: always
+
 networks:
     network_internet:
         driver: bridge

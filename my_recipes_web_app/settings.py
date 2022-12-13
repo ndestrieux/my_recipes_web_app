@@ -155,3 +155,7 @@ AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
 AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
 AWS_SES_REGION_NAME = 'eu-central-1'
 AWS_SES_REGION_ENDPOINT = 'email.eu-central-1.amazonaws.com'
+
+# CELERY
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "redis://redis:6379/0")
