@@ -1,13 +1,14 @@
 from django.contrib.auth.views import LogoutView
 from django.urls import path
 
-from app.views import (FavoriteRecipeListView, HomePageView, MyRecipeListView,
-                       RecipeAppetizerListView, RecipeBakeryListView,
-                       RecipeBreakfastListView, RecipeCreationView,
-                       RecipeDessertListView, RecipeDetailView,
-                       RecipeDinnerListView, RecipeDrinkListView,
-                       RecipeListView, RecipeLunchListView, UserLoginView,
-                       UserRegistrationView, GeneratePdf)
+from app.views import (FavoriteRecipeListView, GeneratePdf, HomePageView,
+                       MyRecipeListView, RecipeAppetizerListView,
+                       RecipeBakeryListView, RecipeBreakfastListView,
+                       RecipeCreationView, RecipeDessertListView,
+                       RecipeDetailView, RecipeDinnerListView,
+                       RecipeDrinkListView, RecipeListView,
+                       RecipeLunchListView, SendEmailView, UserLoginView,
+                       UserRegistrationView)
 
 app_patterns = [
     path("register/", UserRegistrationView.as_view(), name="register"),
@@ -32,5 +33,6 @@ app_patterns = [
         "recipes/favorites/", FavoriteRecipeListView.as_view(), name="favorite-recipes"
     ),
     path("recipe/<int:pk>/", RecipeDetailView.as_view(), name="recipe-detail"),
-    path('recipe/<int:pk>/pdf/', GeneratePdf.as_view(), name="generate-pdf"),
+    path("recipe/<int:pk>/pdf/", GeneratePdf.as_view(), name="generate-pdf"),
+    path("recipe/<int:pk>/send-email/", SendEmailView.as_view(), name="send-email"),
 ]

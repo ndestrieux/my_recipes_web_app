@@ -65,7 +65,7 @@
                         <li><a class="tw-button btn btn-primary" href="#"><i class="fa fa-twitter"></i> <span
                                 class="down-mobile">Tweet on Twitter</span></a></li>
                         <li><a class="gp-button btn btn-primary" href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a class="mail-button btn btn-primary" href="#"><i class="fa fa-envelope"></i><span
+                        <li><a class="mail-button btn btn-primary" href="{% url 'send-email' recipe.id %}"><i class="fa fa-envelope"></i><span
                                 class="down-mobile">Send to a friend</span></a></li>
                         <li><a class="download-button btn btn-primary" href="{% url 'generate-pdf' recipe.id %}" target="_blank"><i class="fa fa-download"></i><span
                                 class="down-mobile">Download</span></a></li>
@@ -106,7 +106,7 @@
                         <li><a class="tw-button btn btn-primary" href="#"><i class="fa fa-twitter"></i> <span
                                 class="down-mobile">Tweet on Twitter</span></a></li>
                         <li><a class="gp-button btn btn-primary" href="#"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a class="mail-button btn btn-primary" href="#"><i class="fa fa-envelope"></i><span
+                        <li><a class="mail-button btn btn-primary" href="{% url 'send-email' recipe.id %}"><i class="fa fa-envelope"></i><span
                                 class="down-mobile">Send to a friend</span></a></li>
                         <li><a class="download-button btn btn-primary" href="{% url 'generate-pdf' recipe.id %}" target="_blank"><i class="fa fa-download"></i><span
                                 class="down-mobile">Download</span></a></li>

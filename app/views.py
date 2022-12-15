@@ -1,19 +1,20 @@
-from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse, Http404, FileResponse
+from django.http import Http404, HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, DetailView, ListView
+from django.views.generic import CreateView, DetailView, FormView, ListView
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin
 
-from app.forms import (IngredientQuantityFormSet, RecipeForm, UserLoginForm,
-                       UserRegistrationForm)
+from app.forms import (IngredientQuantityFormSet, RecipeForm, SendMailForm,
+                       UserLoginForm, UserRegistrationForm)
 from app.models import (AppetizerRecipe, BakeryRecipe, BreakfastRecipe,
                         DessertRecipe, DinnerRecipe, DrinkRecipe, Ingredient,
                         LunchRecipe, Recipe, VoteHistory)
-from app.utils import render_to_pdf
+from app.properties import PDF_TEMPLATE
+from app.tasks import send_email_task
+from app.utils import get_recipe_pdf_context, render_to_pdf
 
 
 class UserRegistrationView(CreateView):
@@ -157,7 +158,8 @@ class RecipeDetailView(DetailView):
         current_user = self.request.user
         if not current_user.is_anonymous:
             is_favorite = (
-                current_user in Recipe.objects.get(id=self.object.id).is_favorited_by.all()
+                current_user
+                in Recipe.objects.get(id=self.object.id).is_favorited_by.all()
             )
             try:
                 vote = VoteHistory.objects.get(user=current_user, recipe=self.object)
@@ -182,3 +184,30 @@ class GeneratePdf(DetailView):
             response["Content-Disposition"] = content
             return response
         return Http404("<h1>The file couldn't be generated</h1>")
+
+
+class SendEmailView(FormView):
+    template_name = "app/send_mail.html"
+    form_class = SendMailForm
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["related_recipe"] = self.kwargs["pk"]
+        return kwargs
+
+    def get_success_url(self):
+        return reverse_lazy("recipe-detail", kwargs=self.kwargs)
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            user = request.user
+            recipe = Recipe.objects.get(pk=self.kwargs["pk"])
+            recipient = form.cleaned_data["recipient"]
+            content = form.cleaned_data["content"]
+            pdf_context = get_recipe_pdf_context(recipe)
+            # add callback for logs later
+            send_email_task.delay(user.username, recipient, content, pdf_context)
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)

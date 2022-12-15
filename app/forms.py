@@ -147,3 +147,31 @@ class IngredientQuantityFormSet(InlineFormSetFactory):
     model = IngredientQuantity
     form_class = IngredientQuantityForm
     factory_kwargs = {"extra": 1, "can_delete": False}
+
+
+class SendMailForm(forms.Form):
+    recipient = forms.EmailField()
+    content = forms.CharField(
+        required=False, widget=forms.Textarea(attrs={"rows": "5"})
+    )
+
+    class Meta:
+        fields = [
+            "recipient",
+            "content",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        self.related_recipe = kwargs.pop("related_recipe")
+        recipe_url = "{% url 'recipe-detail' " + str(self.related_recipe) + " %}"
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "POST"
+        self.helper.layout = Layout(
+            "recipient",
+            "content",
+            ButtonHolder(
+                Submit("submit", "Send recipe"),
+                HTML(f"<a href='{recipe_url}' class='btn btn-primary'>Cancel</a>"),
+            ),
+        )
