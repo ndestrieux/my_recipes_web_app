@@ -173,13 +173,12 @@ class GeneratePdf(DetailView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        context = self.get_context_data(object=self.object)
-        context["request"] = request
-        pdf = render_to_pdf('pdf/recipe_detail.html', context)
+        pdf_context = get_recipe_pdf_context(self.object)
+        pdf = render_to_pdf(PDF_TEMPLATE, pdf_context)
         if pdf:
-            response =  HttpResponse(pdf, content_type='application/pdf')
+            response = HttpResponse(pdf, content_type="application/pdf")
             filename = f"recipe - {self.object.name}.pdf"
             content = f"inline; filename={filename}"
-            response['Content-Disposition'] = content
+            response["Content-Disposition"] = content
             return response
         return Http404("<h1>The file couldn't be generated</h1>")

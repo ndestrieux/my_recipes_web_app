@@ -1,9 +1,10 @@
 from io import BytesIO
-from django.http import HttpResponse
-from django.template.loader import get_template
 
+from django.conf import settings
+from django.template.loader import get_template
 from xhtml2pdf import pisa
 
+from app.serializers import RecipeSerializer
 
 
 def render_to_pdf(template_src, context_dict=None):
@@ -18,3 +19,11 @@ def render_to_pdf(template_src, context_dict=None):
     if not status.err:
         return pdf_file
     return None
+
+
+def get_recipe_pdf_context(instance):
+    pdf_context = dict()
+    recipe_serializer = RecipeSerializer(instance)
+    pdf_context["recipe"] = recipe_serializer.serialize()
+    pdf_context["logo_path"] = settings.STATIC_ROOT + "images/version/food-logo.png"
+    return pdf_context
