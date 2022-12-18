@@ -1,3 +1,5 @@
+import binascii
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -13,8 +15,8 @@ from app.models import (AppetizerRecipe, BakeryRecipe, BreakfastRecipe,
                         DessertRecipe, DinnerRecipe, DrinkRecipe, Ingredient,
                         LunchRecipe, Recipe, VoteHistory)
 from app.properties import PDF_TEMPLATE
-from app.tasks import send_email_task
-from app.utils import get_recipe_pdf_context, render_to_pdf
+from app.tasks import render_to_pdf_task, send_email_task
+from app.utils import get_recipe_pdf_context
 
 
 class UserRegistrationView(CreateView):
@@ -176,14 +178,16 @@ class GeneratePdf(DetailView):
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
         pdf_context = get_recipe_pdf_context(self.object)
-        pdf = render_to_pdf(PDF_TEMPLATE, pdf_context)
+        pdf_generation = render_to_pdf_task.delay(PDF_TEMPLATE, pdf_context)
+        pdf = pdf_generation.wait()
         if pdf:
-            response = HttpResponse(pdf, content_type="application/pdf")
+            response = HttpResponse(pdf.encode("ISO8859-1"), content_type="application/pdf")
             filename = f"recipe - {self.object.name}.pdf"
             content = f"inline; filename={filename}"
             response["Content-Disposition"] = content
             return response
-        return Http404("<h1>The file couldn't be generated</h1>")
+        else:
+            raise Http404("The file couldn't be generated")
 
 
 class SendEmailView(FormView):
