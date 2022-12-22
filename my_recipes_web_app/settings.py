@@ -92,8 +92,19 @@ DATABASES = {
         "USER": env("DATABASE_USER"),
         "PASSWORD": env("DATABASE_PASSWORD"),
         "HOST": env("DATABASE_HOST"),
+    },
+    "mongodb": {
+        "ENGINE": "djongo",
+        "NAME": env("MONGODB_NAME"),
+        "CLIENT": {
+            "host": env("MONGODB_HOST"),
+            "username": env("MONGODB_USERNAME"),
+            "password": env("MONGODB_PASSWORD"),
+        },
     }
 }
+
+DATABASE_ROUTERS = ["app.utils.db_routers.MongoDbRouter", ]
 
 
 # Password validation
