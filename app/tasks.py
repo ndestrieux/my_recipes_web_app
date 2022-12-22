@@ -1,4 +1,3 @@
-import binascii
 from io import BytesIO
 
 from celery import shared_task
@@ -8,7 +7,8 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 
 from app.properties import PDF_TEMPLATE
-from app.utils import EmailTemplate
+from app.utils.mail_templates import EmailTemplate
+
 
 @shared_task
 def render_to_pdf_task(template_src, context_dict=None):
@@ -20,7 +20,6 @@ def render_to_pdf_task(template_src, context_dict=None):
     status = pisa.pisaDocument(BytesIO(html.encode("utf-8")), buffer)
     buffer.seek(0)
     pdf_file = buffer.read()
-    print(type(pdf_file))
     if not status.err:
         return pdf_file.decode("ISO8859-1")
     return None

@@ -1,5 +1,3 @@
-import binascii
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
@@ -16,7 +14,7 @@ from app.models import (AppetizerRecipe, BakeryRecipe, BreakfastRecipe,
                         LunchRecipe, Recipe, VoteHistory)
 from app.properties import PDF_TEMPLATE
 from app.tasks import render_to_pdf_task, send_email_task
-from app.utils import get_recipe_pdf_context
+from app.utils.generate_pdf_context import get_recipe_pdf_context
 
 
 class UserRegistrationView(CreateView):
@@ -181,7 +179,9 @@ class GeneratePdf(DetailView):
         pdf_generation = render_to_pdf_task.delay(PDF_TEMPLATE, pdf_context)
         pdf = pdf_generation.wait()
         if pdf:
-            response = HttpResponse(pdf.encode("ISO8859-1"), content_type="application/pdf")
+            response = HttpResponse(
+                pdf.encode("ISO8859-1"), content_type="application/pdf"
+            )
             filename = f"recipe - {self.object.name}.pdf"
             content = f"inline; filename={filename}"
             response["Content-Disposition"] = content
