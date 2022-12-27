@@ -13,7 +13,7 @@ from app.models import (AppetizerRecipe, BakeryRecipe, BreakfastRecipe,
                         DessertRecipe, DinnerRecipe, DrinkRecipe, Ingredient,
                         LunchRecipe, Recipe, VoteHistory)
 from app.properties import PDF_TEMPLATE
-from app.tasks import render_to_pdf_task, send_email_task
+from app.tasks import log_email_task, render_to_pdf_task, send_email_task
 from app.utils.generate_pdf_context import get_recipe_pdf_context
 
 
@@ -210,8 +210,15 @@ class SendEmailView(FormView):
             recipient = form.cleaned_data["recipient"]
             content = form.cleaned_data["content"]
             pdf_context = get_recipe_pdf_context(recipe)
-            # add callback for logs later
-            send_email_task.delay(user.username, recipient, content, pdf_context)
+            send_email_task.apply_async(
+                (
+                    user.id,
+                    recipient,
+                    content,
+                    pdf_context,
+                ),
+                link=log_email_task.s(),
+            )
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
