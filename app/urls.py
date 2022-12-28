@@ -1,4 +1,5 @@
-from django.contrib.auth.views import LogoutView
+from django.contrib.auth.views import (LogoutView, PasswordChangeDoneView,
+                                       PasswordChangeView)
 from django.urls import path
 
 from app.views import (FavoriteRecipeListView, GeneratePdf, HomePageView,
@@ -14,6 +15,16 @@ app_patterns = [
     path("register/", UserRegistrationView.as_view(), name="register"),
     path("login/", UserLoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
+    path(
+        "change_password/",
+        PasswordChangeView.as_view(template_name="users/password_change.html"),
+        name="password_change",
+    ),
+    path(
+        "change_password/done/",
+        PasswordChangeDoneView.as_view(template_name="users/password_change_done.html"),
+        name="password_change_done",
+    ),
     path("home/", HomePageView.as_view(), name="home"),
     path("newrecipe/", RecipeCreationView.as_view(), name="add-recipe"),
     path("recipes/", RecipeListView.as_view(), name="recipe-list"),
