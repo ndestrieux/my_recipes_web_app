@@ -1,9 +1,14 @@
+from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.exceptions import ObjectDoesNotExist
+from django.db.models.query_utils import Q
 from django.http import Http404, HttpResponse
 from django.urls import reverse_lazy
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from django.views.generic import CreateView, DetailView, FormView, ListView
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin
 
@@ -12,7 +17,7 @@ from app.forms import (IngredientQuantityFormSet, RecipeForm, SendMailForm,
                        UserLoginForm, UserRegistrationForm)
 from app.models import (AppetizerRecipe, BakeryRecipe, BreakfastRecipe,
                         DessertRecipe, DinnerRecipe, DrinkRecipe, Ingredient,
-                        LunchRecipe, Recipe, VoteHistory)
+                        LunchRecipe, Recipe, User, VoteHistory)
 from app.properties import PDF_TEMPLATE
 from app.tasks import log_email_task, render_to_pdf_task, send_email_task
 from app.utils.generate_pdf_context import get_recipe_pdf_context
@@ -28,6 +33,40 @@ class UserLoginView(LoginView):
     form_class = UserLoginForm
     template_name = "users/login.html"
     success_url = reverse_lazy("register")
+
+
+class PasswordResetRequestView(FormView):
+    template_name = "users/password_reset.html"
+    form_class = PasswordResetForm
+    success_url = reverse_lazy("password_reset_done")
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            email = form.cleaned_data["email"]
+            associated_users = User.objects.filter(Q(email=email))
+            print(len(associated_users))
+            for user in associated_users:
+                recipient = user.email
+                content = {
+                    "url": request.build_absolute_uri("/"),
+                    "user": user.username,
+                    "uid": urlsafe_base64_encode(force_bytes(user.pk)),
+                    "token": default_token_generator.make_token(user),
+                }
+                mail_type = MailTypeChoice.PASSWORD_RESET.value
+                send_email_task.apply_async(
+                    (
+                        user.id,
+                        recipient,
+                        content,
+                        mail_type,
+                    ),
+                    link=log_email_task.s(),
+                )
+                return self.form_valid(form)
+            else:
+                return self.form_invalid(form)
 
 
 class HomePageView(ListView):

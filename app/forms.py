@@ -57,7 +57,12 @@ class UserLoginForm(AuthenticationForm):
             "password",
             ButtonHolder(
                 Submit("submit", "login"),
-                HTML("<a href='#' class='btn btn-primary'>Cancel</a>"),
+                HTML(
+                    """<a href="{% url 'home' %}" class='btn btn-primary'>Cancel</a>&nbsp;"""
+                ),
+                HTML(
+                    """<a href="{% url 'password_reset' %}" class='btn btn-primary'>Reset password</a>"""
+                ),
             ),
         )
 

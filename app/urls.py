@@ -1,15 +1,18 @@
 from django.contrib.auth.views import (LogoutView, PasswordChangeDoneView,
-                                       PasswordChangeView)
+                                       PasswordChangeView,
+                                       PasswordResetCompleteView,
+                                       PasswordResetConfirmView,
+                                       PasswordResetDoneView)
 from django.urls import path
 
 from app.views import (FavoriteRecipeListView, GeneratePdf, HomePageView,
-                       MyRecipeListView, RecipeAppetizerListView,
-                       RecipeBakeryListView, RecipeBreakfastListView,
-                       RecipeCreationView, RecipeDessertListView,
-                       RecipeDetailView, RecipeDinnerListView,
-                       RecipeDrinkListView, RecipeListView,
-                       RecipeLunchListView, SendEmailView, UserLoginView,
-                       UserRegistrationView)
+                       MyRecipeListView, PasswordResetRequestView,
+                       RecipeAppetizerListView, RecipeBakeryListView,
+                       RecipeBreakfastListView, RecipeCreationView,
+                       RecipeDessertListView, RecipeDetailView,
+                       RecipeDinnerListView, RecipeDrinkListView,
+                       RecipeListView, RecipeLunchListView, SendEmailView,
+                       UserLoginView, UserRegistrationView)
 
 app_patterns = [
     path("register/", UserRegistrationView.as_view(), name="register"),
@@ -24,6 +27,26 @@ app_patterns = [
         "change_password/done/",
         PasswordChangeDoneView.as_view(template_name="users/password_change_done.html"),
         name="password_change_done",
+    ),
+    path("password_reset", PasswordResetRequestView.as_view(), name="password_reset"),
+    path(
+        "password_reset/done/",
+        PasswordResetDoneView.as_view(template_name="users/password_reset_done.html"),
+        name="password_reset_done",
+    ),
+    path(
+        "reset/<uidb64>/<token>/",
+        PasswordResetConfirmView.as_view(
+            template_name="users/password_reset_confirm.html"
+        ),
+        name="password_reset_confirm",
+    ),
+    path(
+        "reset/complete/",
+        PasswordResetCompleteView.as_view(
+            template_name="users/password_reset_complete.html"
+        ),
+        name="password_reset_complete",
     ),
     path("home/", HomePageView.as_view(), name="home"),
     path("newrecipe/", RecipeCreationView.as_view(), name="add-recipe"),
