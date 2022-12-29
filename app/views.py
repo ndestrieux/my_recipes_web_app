@@ -7,6 +7,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, FormView, ListView
 from extra_views import CreateWithInlinesView, NamedFormsetsMixin
 
+from app.enums import MailTypeChoice
 from app.forms import (IngredientQuantityFormSet, RecipeForm, SendMailForm,
                        UserLoginForm, UserRegistrationForm)
 from app.models import (AppetizerRecipe, BakeryRecipe, BreakfastRecipe,
@@ -208,13 +209,18 @@ class SendEmailView(FormView):
             user = request.user
             recipe = Recipe.objects.get(pk=self.kwargs["pk"])
             recipient = form.cleaned_data["recipient"]
-            content = form.cleaned_data["content"]
+            content = {
+                "url": request.build_absolute_uri("/"),
+                "message": form.cleaned_data["message"],
+            }
+            mail_type = MailTypeChoice.RECIPE_SHARING.value
             pdf_context = get_recipe_pdf_context(recipe)
             send_email_task.apply_async(
                 (
                     user.id,
                     recipient,
                     content,
+                    mail_type,
                     pdf_context,
                 ),
                 link=log_email_task.s(),

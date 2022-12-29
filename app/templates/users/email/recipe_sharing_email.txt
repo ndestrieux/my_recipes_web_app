@@ -1,0 +1,12 @@
+{% autoescape off %}
+{{ message }}
+
+-----------------------------------------------------------------------------
+Please find the recipe in attachment
+
+Sincerely,
+The Website Team
+
+{{ url }}
+
+{% endautoescape %}
