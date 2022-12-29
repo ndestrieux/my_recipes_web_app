@@ -33,7 +33,7 @@ services:
             - network_no_internet
         healthcheck:
             test: [ "CMD-SHELL", "pg_isready -U ${DATABASE_USER}" ]
-            interval: 5s
+            interval: 1m30s
             timeout: 30s
             retries: 6
         restart: always
@@ -52,7 +52,7 @@ services:
             - network_no_internet
         healthcheck:
             test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/$MONGODB_NAME --quiet
-            interval: 5s
+            interval: 1m30s
             timeout: 30s
             retries: 6
         restart: always
