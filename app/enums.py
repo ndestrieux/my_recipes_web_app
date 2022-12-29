@@ -33,3 +33,8 @@ class CategoryChoice(Enum):
     drink = "drink"
     appetizer = "appetizer"
     bakery = "bakery"
+
+
+class MailTypeChoice(Enum):
+    RECIPE_SHARING = "Recipe sharing"
+    PASSWORD_RESET = "Password reset"
