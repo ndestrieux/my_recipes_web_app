@@ -151,14 +151,14 @@ class IngredientQuantityFormSet(InlineFormSetFactory):
 
 class SendMailForm(forms.Form):
     recipient = forms.EmailField()
-    content = forms.CharField(
+    message = forms.CharField(
         required=False, widget=forms.Textarea(attrs={"rows": "5"})
     )
 
     class Meta:
         fields = [
             "recipient",
-            "content",
+            "message",
         ]
 
     def __init__(self, *args, **kwargs):
@@ -169,7 +169,7 @@ class SendMailForm(forms.Form):
         self.helper.form_method = "POST"
         self.helper.layout = Layout(
             "recipient",
-            "content",
+            "message",
             ButtonHolder(
                 Submit("submit", "Send recipe"),
                 HTML(f"<a href='{recipe_url}' class='btn btn-primary'>Cancel</a>"),
