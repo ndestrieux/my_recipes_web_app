@@ -12,4 +12,4 @@ class MongoDbRouter:
         return "default"
 
     def allow_migrate(self, _db, _app_label, model_name=None, **_hints):
-        return model_name in self.nonrel_models
+        return not (model_name in self.nonrel_models)
