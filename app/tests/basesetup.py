@@ -2,7 +2,7 @@ from datetime import datetime as dt
 
 from django.contrib.auth.models import User
 
-from app.enums import LanguageChoice, VoteChoice
+from app.enums import CategoryChoice, LanguageChoice, VoteChoice
 from app.models import (Comment, Ingredient, IngredientQuantity, Recipe,
                         VoteHistory)
 
@@ -28,15 +28,16 @@ class BaseTestSetup:
             content="test",
             nb_of_people=8,
             language=LanguageChoice.EN,
+            category=CategoryChoice.dessert.name,
             posted_by=self.test_user,
         )
-        self.test_vote = VoteHistory.objects.create(
-            vote=VoteChoice.UP,
+        self.test_UP_vote = VoteHistory.objects.create(
+            vote=VoteChoice.UP.name,
             user=self.test_user,
             recipe=self.test_recipe,
         )
         self.test_down_vote = VoteHistory.objects.create(
-            vote=VoteChoice.DOWN,
+            vote=VoteChoice.DOWN.name,
             user=self.test_unsatisfied_user,
             recipe=self.test_recipe,
         )
