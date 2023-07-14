@@ -1,16 +1,12 @@
 services:
     app:
         build: .
-        command: >
-            sh -c "python manage.py makemigrations --no-input &&
-            python manage.py migrate --no-input &&
-            python -u manage.py runserver 0.0.0.0:8000"
         ports:
             - 8000:8000
         volumes:
-            - .:/app
+            - ./src:/app
         env_file:
-            - .env
+            - ./src/.env
         networks:
             - network_internet
             - network_no_internet
@@ -68,7 +64,7 @@ services:
         build: .
         command: celery -A my_recipes_web_app worker -l INFO
         volumes:
-            - .:/app
+            - ./src:/app
         networks:
             - network_no_internet
             - network_internet
