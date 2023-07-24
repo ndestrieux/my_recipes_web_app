@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-recipes-psql
+  labels:
+    app: my-recipes-psql
+    group: db
+spec:
+  selector:
+    matchLabels:
+      app: my-recipes-psql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: my-recipes-psql
+    spec:
+      containers:
+        - name: my-recipes-psql
+          image: postgres:14
+          ports:
+            - containerPort: 5432
+              name: "postgres"
+          envFrom:
+            - secretRef:
+                name: django-app-dev-env
+            -   configMapRef:
+                  name: app-configmap
+          volumeMounts:
+            -   name: postgres-volume-mount
+                mountPath: /var/lib/postgresql/data
+      volumes:
+        -   name: postgres-volume-mount
+            persistentVolumeClaim:
+              claimName: postgres-pvc
