@@ -6,7 +6,7 @@ services:
         volumes:
             - ./src:/app
         env_file:
-            - ./src/.env
+            - .env
         networks:
             - network_internet
             - network_no_internet
@@ -65,6 +65,8 @@ services:
         command: celery -A my_recipes_web_app worker -l INFO
         volumes:
             - ./src:/app
+        env_file:
+            - .env
         networks:
             - network_no_internet
             - network_internet
