@@ -6,3 +6,4 @@ data:
     ALLOWED_HOSTS: "*"
     DEBUG: "True"
     POSTGRES_HOST: "my-recipes-psql"
+    REDIS_HOST: "my-recipes-redis"
