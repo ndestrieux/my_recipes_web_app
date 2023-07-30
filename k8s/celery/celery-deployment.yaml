@@ -19,6 +19,7 @@ spec:
       containers:
         - name: my-recipes-celery
           image: my-recipes-app:latest
+          command: ['celery', '-A', 'my_recipes_web_app', 'worker', '-l', 'INFO']
           envFrom:
             - secretRef:
                 name: django-app-dev-env
