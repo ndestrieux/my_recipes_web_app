@@ -24,12 +24,12 @@ spec:
           envFrom:
             - secretRef:
                 name: django-app-dev-env
-            -   configMapRef:
-                  name: app-configmap
+            - configMapRef:
+                name: app-configmap
           volumeMounts:
-            -   name: postgres-volume-mount
-                mountPath: /var/lib/postgresql/data
+            - name: postgres-volume-mount
+              mountPath: /var/lib/postgresql/data
       volumes:
-        -   name: postgres-volume-mount
-            persistentVolumeClaim:
-              claimName: postgres-pvc
+        - name: postgres-volume-mount
+          persistentVolumeClaim:
+            claimName: postgres-pvc
