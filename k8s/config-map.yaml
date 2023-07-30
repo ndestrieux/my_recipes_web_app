@@ -7,3 +7,4 @@ data:
     DEBUG: "True"
     POSTGRES_HOST: "my-recipes-psql"
     REDIS_HOST: "my-recipes-redis"
+    MONGODB_HOST: "my-recipes-mongodb"
