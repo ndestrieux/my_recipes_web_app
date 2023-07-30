@@ -86,7 +86,7 @@ WSGI_APPLICATION = "my_recipes_web_app.wsgi.application"
 
 DATABASES = {
     "default": {
-        "NAME": env("POSTGRES_NAME"),
+        "NAME": env("POSTGRES_DB"),
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "USER": env("POSTGRES_USER"),
         "PASSWORD": env("POSTGRES_PASSWORD"),
@@ -94,11 +94,11 @@ DATABASES = {
     },
     "mongodb": {
         "ENGINE": "djongo",
-        "NAME": env("MONGODB_NAME"),
+        "NAME": env("MONGO_INITDB_DATABASE"),
         "CLIENT": {
             "host": env("MONGODB_HOST"),
-            "username": env("MONGODB_USERNAME"),
-            "password": env("MONGODB_PASSWORD"),
+            "username": env("MONGO_INITDB_ROOT_USERNAME"),
+            "password": env("MONGO_INITDB_ROOT_PASSWORD"),
         },
     },
 }
