@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-recipes-app
+  labels:
+    app: my-recipes-app
+    group: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-recipes-app
+  template:
+    metadata:
+      labels:
+        app: my-recipes-app
+        group: db
+    spec:
+      containers:
+        - name: my-recipes-app
+          image: my-recipes-app:latest
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - secretRef:
+                name: django-app-dev-env
+            - configMapRef:
+                name: app-configmap
+          imagePullPolicy: Never

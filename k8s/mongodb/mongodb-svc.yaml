@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: my-recipes-mongodb
+spec:
+  selector:
+    app: my-recipes-mongodb
+  ports:
+    - port: 27017
+      targetPort: 27017

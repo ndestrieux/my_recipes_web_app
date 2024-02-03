@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-configmap
+data:
+    ALLOWED_HOSTS: "*"
+    DEBUG: "True"
+    POSTGRES_HOST: "my-recipes-psql"
+    REDIS_HOST: "my-recipes-redis"
+    MONGODB_HOST: "my-recipes-mongodb"

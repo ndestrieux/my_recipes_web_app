@@ -1,0 +1,10 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: my-recipes-psql
+spec:
+  selector:
+    app: my-recipes-psql
+  ports:
+    - port: 5432
+      targetPort: 5432

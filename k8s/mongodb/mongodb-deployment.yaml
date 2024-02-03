@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-recipes-mongodb
+  labels:
+    app: my-recipes-mongodb
+    group: db
+spec:
+  selector:
+    matchLabels:
+      app: my-recipes-mongodb
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: my-recipes-mongodb
+    spec:
+      containers:
+        - name: my-recipes-mongodb
+          image: mongo:6.0.3
+          ports:
+            - containerPort: 27017
+              name: "mongodb"
+          envFrom:
+            - secretRef:
+                name: django-app-dev-env
+            - configMapRef:
+                  name: app-configmap
+          volumeMounts:
+            - name: mongo-volume-mount
+              mountPath: /data/db
+      volumes:
+        - name: mongo-volume-mount
+          persistentVolumeClaim:
+            claimName: mongo-pvc

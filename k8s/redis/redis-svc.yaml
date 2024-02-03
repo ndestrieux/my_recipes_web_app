@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-recipes-redis
+  labels:
+      group: db
+spec:
+  type: ClusterIP
+  selector:
+    app: my-recipes-redis
+  ports:
+  - port: 6379
+    targetPort: 6379
