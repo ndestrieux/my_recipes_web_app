@@ -40,13 +40,13 @@ To run this project on your machine it is required to have installed previously 
        <summary>see .env file variables</summary>
         SECRET_KEY<br>
         DEBUG<br>
-        DATABASE_NAME<br>
-        DATABASE_USER<br>
-        DATABASE_PASSWORD<br>
-        DATABASE_HOST<br>
-        MONGODB_NAME<br>
-        MONGODB_USERNAME<br>
-        MONGODB_PASSWORD<br>
+        POSTGRES_DB<br>
+        POSTGRES_USER<br>
+        POSTGRES_PASSWORD<br>
+        POSTGRES_HOST<br>
+        MONGO_INITDB_DATABASE<br>
+        MONGO_INITDB_ROOT_USERNAME<br>
+        MONGO_INITDB_ROOT_PASSWORD<br>
         MONGODB_HOST<br>
         AWS_SECRET_ACCESS_KEY<br>
         AWS_ACCESS_KEY_ID<br>
