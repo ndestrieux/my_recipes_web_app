@@ -1,10 +1,12 @@
 services:
     app:
-        build: .
+        build:
+            context: ../../
+            dockerfile: ./deployment/dev/Dockerfile
         ports:
             - 8000:8000
         volumes:
-            - ./src:/app
+            - ../../src:/app
         env_file:
             - .env
         networks:
@@ -29,7 +31,7 @@ services:
             - network_no_internet
         healthcheck:
             test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER}" ]
-            interval: 1m30s
+            interval: 5s
             timeout: 30s
             retries: 6
         restart: always
@@ -43,12 +45,11 @@ services:
         hostname: ${MONGODB_HOST}
         volumes:
             - mongodata:/data/db
-            - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
         networks:
             - network_no_internet
         healthcheck:
             test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/MONGO_INITDB_DATABASE --quiet
-            interval: 1m30s
+            interval: 5s
             timeout: 30s
             retries: 6
         restart: always
@@ -61,10 +62,11 @@ services:
             test: [ "CMD", "redis-cli", "--raw", "incr", "ping" ]
 
     celery:
-        build: .
-        command: celery -A my_recipes_web_app worker -l INFO
+        build:
+            context: ../../
+            dockerfile: ./deployment/dev/Dockerfile
         volumes:
-            - ./src:/app
+            - ../../src:/app
         env_file:
             - .env
         networks:
