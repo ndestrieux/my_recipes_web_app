@@ -23,7 +23,7 @@ class RecipeSerializer:
             "ingredients": ingredient_list,
             "content": self.instance.content,
             "nb_of_people": self.instance.nb_of_people,
-            "image_path": self.instance.image.path,
+            "image_path": f".{self.instance.image.path}",
             "date": self.instance.date,
             "posted_by": self.instance.posted_by.username,
         }
