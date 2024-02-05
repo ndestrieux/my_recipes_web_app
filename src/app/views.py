@@ -214,15 +214,15 @@ class GeneratePdf(DetailView):
     model = Recipe
 
     def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        pdf_context = get_recipe_pdf_context(self.object)
+        recipe = self.get_object()
+        pdf_context = get_recipe_pdf_context(recipe)
         pdf_generation = render_to_pdf_task.delay(PDF_TEMPLATE, pdf_context)
         pdf = pdf_generation.wait()
         if pdf:
             response = HttpResponse(
                 pdf.encode("ISO8859-1"), content_type="application/pdf"
             )
-            filename = f"recipe - {self.object.name}.pdf"
+            filename = f"recipe - {recipe.name}.pdf"
             content = f"inline; filename={filename}"
             response["Content-Disposition"] = content
             return response
