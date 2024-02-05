@@ -142,8 +142,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, "app/static/")
+STATIC_ROOT = BASE_DIR / "static/"
 STATIC_URL = "static/"
+
+MEDIA_FILES = "media/"
+MEDIA_ROOT = BASE_DIR / "media/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -154,9 +157,6 @@ LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "app/media/")
-MEDIA_URL = "app/media/"
 
 REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%b. %d %Y %H:%M:%S",
@@ -171,7 +171,7 @@ AWS_SES_REGION_ENDPOINT = "email.eu-central-1.amazonaws.com"
 
 # REDIS
 REDIS_URL = "redis://{host}:{port}/0".format(
-    host=env.str("REDIS_HOST", "localhost"), port=env.str("REDIS_PORT", "6379")
+    host=env.str("REDIS_HOST", "redis"), port=env.str("REDIS_PORT", "6379")
 )
 
 # CELERY
