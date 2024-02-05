@@ -1,14 +1,15 @@
 services:
     app:
         build:
-            context: ../../
+            context: .
             dockerfile: ./deployment/dev/Dockerfile
+        command: /start
         ports:
             - 8000:8000
         volumes:
-            - ../../src:/app
+            - ./src:/app
         env_file:
-            - .env
+            - ./.env/.dev
         networks:
             - network_internet
             - network_no_internet
@@ -63,12 +64,13 @@ services:
 
     celery:
         build:
-            context: ../../
+            context: .
             dockerfile: ./deployment/dev/Dockerfile
+        command: /start_worker
         volumes:
-            - ../../src:/app
+            - ./src:/app
         env_file:
-            - .env
+            - ./.env/.dev
         networks:
             - network_no_internet
             - network_internet
