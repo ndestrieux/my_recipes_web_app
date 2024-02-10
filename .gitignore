@@ -375,3 +375,6 @@ fabric.properties
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 *.pem
+
+# AWS Lambda package
+aws/*/package/*
