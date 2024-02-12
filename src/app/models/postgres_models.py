@@ -16,6 +16,10 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
+    DEFAULT_IMAGE = "default-image.jpg"
+    IMAGE_FOLDER = "images"
+    THUMBNAIL_FOLDER = "thumbnails"
+
     name = models.CharField(max_length=256, blank=False, null=False)
     category = models.CharField(
         max_length=32,
@@ -29,14 +33,14 @@ class Recipe(models.Model):
     content = models.TextField(blank=False, null=False)
     nb_of_people = models.IntegerField(blank=False, null=False)
     image = models.ImageField(
-        upload_to="images",
-        default="default-image.jpg",
+        upload_to=IMAGE_FOLDER,
+        default=DEFAULT_IMAGE,
         max_length=1000,
         blank=True,
         null=True,
     )
     thumbnail = models.ImageField(
-        upload_to="thumbnails", default="default-image.jpg", blank=True, null=True
+        upload_to=THUMBNAIL_FOLDER, default=DEFAULT_IMAGE, blank=True, null=True
     )
     language = models.CharField(
         max_length=32,
@@ -57,7 +61,7 @@ class Recipe(models.Model):
         ]
 
     def save(self, *args, **kwargs):
-        if self.image and self.image.name != "default-image.jpg":
+        if self.image and self.image.name != self.DEFAULT_IMAGE:
             self.image.name = self.rename_image_file(self.image.name)
             self.thumbnail = self.create_thumbnail(self.image)
         super().save(*args, **kwargs)
