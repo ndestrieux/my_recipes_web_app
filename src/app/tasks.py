@@ -4,12 +4,14 @@ from typing import Dict
 
 from celery import shared_task
 from django.conf import settings
+from django.core.files import File
 from django.core.mail import EmailMessage
 from django.template.loader import get_template
+from PIL import Image
 from xhtml2pdf import pisa
 
 from app.enums import MailTypeChoice
-from app.models import MailLogs, User
+from app.models import MailLogs, Recipe, User
 from app.properties import PDF_TEMPLATE
 from app.utils.mail_templates import EmailTemplate
 
@@ -81,3 +83,34 @@ def log_email_task(data):
         sent=data["sent"],
         type=data["mail_type"],
     )
+
+
+@shared_task
+def create_thumbnail(recipe_id):
+    recipe = Recipe.objects.get(id=recipe_id)
+    with Image.open(recipe.image) as img:
+        thumbnail_size = 300
+        left, top, right, bottom = 0, 0, thumbnail_size, thumbnail_size
+        if img.width > img.height:
+            output_size = (img.width, thumbnail_size)
+            img.thumbnail(output_size, Image.ANTIALIAS)
+            left_right_crop = int((img.width - thumbnail_size) / 2)
+            left = left_right_crop
+            right = img.width - left_right_crop
+            img = img.crop((left, top, right, bottom))
+        elif img.width < img.height:
+            output_size = (thumbnail_size, img.height)
+            img.thumbnail(output_size, Image.ANTIALIAS)
+            top_bottom_crop = int((img.height - thumbnail_size) / 2)
+            top = top_bottom_crop
+            bottom = img.height - top_bottom_crop
+            img = img.crop((left, top, right, bottom))
+        else:
+            output_size = (thumbnail_size, thumbnail_size)
+            img.thumbnail(output_size, Image.ANTIALIAS)
+        buffer = BytesIO()
+        img.save(buffer, format="JPEG")
+        img = File(buffer, name=recipe.image.name)
+        recipe.thumbnail = img
+        recipe.save(update_fields=["thumbnail"])
+        return f"Thumbnail generated and saved for recipe: {recipe}"

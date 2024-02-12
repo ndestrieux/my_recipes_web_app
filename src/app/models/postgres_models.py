@@ -1,9 +1,5 @@
-from io import BytesIO
-
 from django.contrib.auth.models import User
-from django.core.files import File
 from django.db import models
-from PIL import Image
 
 from app.enums import CategoryChoice, LanguageChoice, UnitChoice, VoteChoice
 
@@ -63,43 +59,12 @@ class Recipe(models.Model):
     def save(self, *args, **kwargs):
         if self.image and self.image.name != self.DEFAULT_IMAGE:
             self.image.name = self.rename_image_file(self.image.name)
-            self.thumbnail = self.create_thumbnail(self.image)
         super().save(*args, **kwargs)
 
     def rename_image_file(self, filename):
         ext = filename.split(".")[-1]
         filename = f"{self.language}_{self.name}.{ext}"
         return filename
-
-    @staticmethod
-    def create_thumbnail(image):
-        thumb = Image.open(image)
-        thumbnail_size = 300
-        left = 0
-        top = 0
-        right = thumbnail_size
-        bottom = thumbnail_size
-        if thumb.width > thumb.height:
-            output_size = (thumb.width, thumbnail_size)
-            thumb.thumbnail(output_size, Image.ANTIALIAS)
-            left_right_crop = int((thumb.width - thumbnail_size) / 2)
-            left = left_right_crop
-            right = thumb.width - left_right_crop
-            thumb = thumb.crop((left, top, right, bottom))
-        elif thumb.width < thumb.height:
-            output_size = (thumbnail_size, thumb.height)
-            thumb.thumbnail(output_size, Image.ANTIALIAS)
-            top_bottom_crop = int((thumb.height - thumbnail_size) / 2)
-            top = top_bottom_crop
-            bottom = thumb.height - top_bottom_crop
-            thumb = thumb.crop((left, top, right, bottom))
-        else:
-            output_size = (thumbnail_size, thumbnail_size)
-            thumb.thumbnail(output_size, Image.ANTIALIAS)
-        buffer = BytesIO()
-        thumb.save(buffer, format="JPEG")
-        thumb = File(buffer, name=image.name)
-        return thumb
 
     def __str__(self):
         return self.name
