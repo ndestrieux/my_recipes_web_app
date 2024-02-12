@@ -159,6 +159,8 @@ if USE_S3:
     MEDIA_LOCATION = "media"
     MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/"
     DEFAULT_FILE_STORAGE = "my_recipes_web_app.storage_backends.MediaStorage"
+    # APIGETWAY settings
+    AWS_APIGATEWAY_CREATETHUMBNAIL_URL = env.str("AWS_APIGATEWAY_CREATETHUMBNAIL_URL")
 else:
     STATIC_URL = "static/"
     STATIC_ROOT = BASE_DIR / "static/"
